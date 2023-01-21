@@ -1,0 +1,33 @@
+{
+  "name": "test231",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.5.2",
+    "@react-navigation/native": "^6.1.1",
+    "@react-navigation/native-stack": "^6.9.7",
+    "@react-navigation/stack": "^6.3.10",
+    "@tanstack/react-query": "^4.22.0",
+    "expo": "~47.0.6",
+    "expo-app-loading": "^2.1.1",
+    "expo-splash-screen": "~0.17.5",
+    "expo-status-bar": "~1.4.2",
+    "nativewind": "^2.0.11",
+    "react": "18.1.0",
+    "react-native": "0.70.5",
+    "react-native-safe-area-context": "^4.4.1",
+    "react-native-vector-icons": "^9.2.0",
+    "socket.io-client": "^4.5.4",
+    "tailwindcss": "^3.2.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9"
+  },
+  "private": true
+}
