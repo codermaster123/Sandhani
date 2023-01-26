@@ -18,6 +18,7 @@ export default function Home() {
         <h1 className="md:tracking-widest  text-center font-title text-2xl md:text-6xl font-bold">
           Sandhani is a blood bank organization
         </h1>
+        <h1>This is test</h1>
         <button onClick={handle}>clicl</button>
        
       </div>
