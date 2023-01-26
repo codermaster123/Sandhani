@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from "../Screen/Home"
 import HomeStack from "./Homestack"
 import SreachStack from "./SreachzStack"
-import Profile from "../Screen/Profile"
+import AcountStack from "./acountStack";
 import Settings from "../Screen/settings"
 
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -32,7 +32,7 @@ export default function BottomTab() {
            <Tab.Screen name='SreachStack' component={SreachStack} options={{tabBarIcon: ({color, size, focused}) => (
             <Ionicons name={focused?"search":"search-outline"} color={color} size={size} />
           )}}/>
-           <Tab.Screen name='profile' component={Profile} options={{tabBarIcon: ({color, size, focused}) => (
+           <Tab.Screen name='profile' component={AcountStack} options={{tabBarIcon: ({color, size, focused}) => (
             <Ionicons name={focused?"person-circle":"person-circle-outline"} color={color} size={size} />
           )}}/>
            <Tab.Screen name='settings' component={Settings} options={{tabBarIcon: ({color, size, focused}) => (

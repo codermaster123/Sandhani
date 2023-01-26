@@ -30,7 +30,15 @@ const SandhaniSchema = new mongoose.Schema({
       type:mongoose.Types.ObjectId,
       ref:"Blood"
     }
-]
+],
+  register:[
+    {
+      type:mongoose.Types.ObjectId,
+      ref:"User"
+    }
+],
+
+
 });
 
 

@@ -2,6 +2,7 @@ import TestModel from "../Model/test.js";
 import User from "../Model/SandhaniUser.js";
 import Blood from "../Model/Blood.js"
 import bcrypt from "bcryptjs";
+
 import jwt from "jsonwebtoken";
 import Sandhani from "../Model/Sandhani.js";
 import cloudinary from "cloudinary";
@@ -96,7 +97,6 @@ export async function AddSandhani(req, res) {
         amount: amount,
       imageUrl: img.secure_url,
     });
-    console.log(newSandhani)
     
     const updateUser = await User.updateOne(
       { _id: req.userId },
