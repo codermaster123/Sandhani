@@ -1,31 +1,36 @@
 import {useState,useEffect} from "react"
 import {View,Text,ScrollView} from "react-native"
+import fetcher from "../utilis/fetcher"
 
+import URL from "../URL";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  
+} from '@tanstack/react-query';
 
 export default function BloodDetails({sId}) {
   
   const [bloods,setBloods]=useState(null)
-  
-  const getAllBloodDetail=async()=>{
     
-    const res=await fetch(`http://localhost:3000/getblood/${sId}`,{
+  const {isLoading}=useQuery(["bloods"],()=>fetcher(`${URL}/getblood/${sId}`,{
       method:"GET",
       headers:{
         "Content-Type":"application/json",
         
       },
-    })
-    const data=await res.json();
-    // console.log(data.bloodData);
-    setBloods((prev)=>{
+    }),{
+      onSuccess:(data)=>{
+        setBloods((prev)=>{
       return data.bloodData;
     })
-    console.log(bloods)
-  }
-  useEffect(()=>{
-    getAllBloodDetail()
+      }
+    })
+  
     
-  },[])
+  
+  
   
    return (
     <View className="flex-1">
@@ -61,7 +66,5 @@ export default function BloodDetails({sId}) {
         
      </ScrollView>
      </View>
-     
-     )
-  
+)
 }

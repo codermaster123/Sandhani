@@ -69,7 +69,7 @@ export default function Sreach () {
         <View className=" h-10  m-2 ml-4  rounded-md  flex-row bg-gray-50 border-b border-red-500 items-center  shadow-lg" style={{marginRight:20,shadowColor:"red",shadowOffset: {width: -2, height: 4}, shadowOpacity: 0.8, shadowRadius: 3}}>
         
           <Ionicons name="search" style={{fontSize:20,color:"red"}}  />
-         <TextInput placeholder="Enter the sandhani name"  className="ml-2 " value={input} onChangeText={(text)=>handleText(text)}/>
+         <TextInput selectionColor={"red"} placeholder="Enter the sandhani name"  className="ml-2 " value={input} onChangeText={(text)=>handleText(text)}/>
          
      
         </View>

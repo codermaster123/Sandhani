@@ -1,6 +1,14 @@
 import React,{useState,useEffect} from "react";
 import {View,Text,ScrollView,TouchableOpacity,Image} from "react-native";
 import Card from "../Components/Card"
+import URL from "../URL";
+import fetcher from "../utilis/fetcher"
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  
+} from '@tanstack/react-query';
 
 const Home=({navigation})=>{
     const [allSandhani,setAllSandhani]=useState(null);
@@ -11,10 +19,24 @@ const Home=({navigation})=>{
         sandhani:thisSandhani
       });
       
+      
     }
+    const  {data}=useQuery(["getAll"],()=>fetcher(URL+"/getAllSandhani"),{
+      
+      refetchOnWindowFocus: false,
+      enabled:true,
+      onSuccess(data){
+        setAllSandhani((prev)=>{
+          return data;
+          
+        })
+        
+      }
+      
+    })
     
     const loadAllSandhani=async()=>{
-      const res=await fetch("http://localhost:3000/getAllSandhani",{
+      const res=await fetch(URL+"/getAllSandhani",{
         method:'GET',
         headers:{
         "Content-Type":"application/json"
@@ -25,7 +47,7 @@ const Home=({navigation})=>{
       
     }
     useEffect(()=>{
-      loadAllSandhani()
+      // loadAllSandhani()
     },[])
     
     return(
