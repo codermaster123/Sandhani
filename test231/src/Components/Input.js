@@ -8,6 +8,7 @@ export default function Input({label,IconName,error,password,onFocus=()=>{},COLO
   
   const [isFocus,setFocus]=React.useState(false);
   const [hidePassword,setHidePassword]=React.useState(password)
+  
   return (
     
     <View className="mb-2">

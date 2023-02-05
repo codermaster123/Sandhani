@@ -1,11 +1,13 @@
 import React from "react";
-import {View,Text,TouchableOpacity,Image} from "react-native"
+import {View,Text,TouchableOpacity,Image,Animated} from "react-native"
 
 export default function Card({sandhani,onClick}) {
+  
+  
   return (
     <TouchableOpacity key={sandhani?._id} activeOpacity={0.9} className="flex flex-col bg-white  rounded-lg m-2 shadow-lg  " style={{shadowColor:"red",shadowOffset: {width: -2, height: 4}, shadowOpacity: 0.8, shadowRadius: 3}}>
       
-              <View  >         
+              <Animated.View>         
               <View className="flex-row items-center">
               <View className="border rounded-full border-red-700 m-2" >
                <Image  className="w-20 m-2 h-20 border-2 border-red-300 rounded-full " source={{uri:sandhani.imageUrl}}/>
@@ -30,7 +32,7 @@ export default function Card({sandhani,onClick}) {
              <Text className="mt-2 mb-2 text-red-700 text-center text-xl ">View more</Text>
             </TouchableOpacity>
             
-            </View>
+            </Animated.View>
             
            </TouchableOpacity>
            

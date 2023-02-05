@@ -8,6 +8,7 @@ import { AiFillHome } from "react-icons/ai";
 import Input from "../Components/Input"
 import Submit from "../Components/BigButton"
 import fetcher from "../utilis/Fetcher"
+
 import {useMutation,useQueryClient,} from "@tanstack/react-query";
 
 
@@ -42,18 +43,20 @@ const navigate=useNavigate();
       
     })
     
+    
   const handleSubmit=async(e)=>{
     e.preventDefault();
-    console.log("here")
-        
+      
   
     const data = new FormData();
+    
     data.append("name", input.name);
     data.append("email",input.email);
     data.append("address",input.address);
     data.append("amount",input.amount)
     data.append("Sandhani", postImage);
     await mutation.mutate(data)
+    
     // const res = await fetch("http://localhost:3000/AddSandhani", {
     //   method: "POST",
     //   headers:{

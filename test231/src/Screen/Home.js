@@ -1,6 +1,8 @@
-import React,{useState,useEffect} from "react";
-import {View,Text,ScrollView,TouchableOpacity,Image} from "react-native";
+import React,{useState,useEffect,useRef} from "react";
+import {View,Text,ScrollView,TouchableOpacity,Image,Animated} from "react-native";
 import Card from "../Components/Card"
+import CardSkeleton from "../Components/Cardskeleton"
+
 import URL from "../URL";
 import fetcher from "../utilis/fetcher"
 import {
@@ -11,6 +13,8 @@ import {
 } from '@tanstack/react-query';
 
 const Home=({navigation})=>{
+  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
     const [allSandhani,setAllSandhani]=useState(null);
     
     const onClick=(thisSandhani)=>{
@@ -21,11 +25,12 @@ const Home=({navigation})=>{
       
       
     }
-    const  {data}=useQuery(["getAll"],()=>fetcher(URL+"/getAllSandhani"),{
+    const  {data,isLoading}=useQuery(["getAll"],()=>fetcher(URL+"/getAllSandhani"),{
       
       refetchOnWindowFocus: false,
       enabled:true,
       onSuccess(data){
+        
         setAllSandhani((prev)=>{
           return data;
           
@@ -46,9 +51,17 @@ const Home=({navigation})=>{
       setAllSandhani(data)
       
     }
-    useEffect(()=>{
-      // loadAllSandhani()
-    },[])
+    
+    
+    if(isLoading){
+      return (
+        <ScrollView className="flex-1">
+        {items.map((item)=>{
+          return  <CardSkeleton key={item}/>
+        })}
+        </ScrollView>
+        )
+    }
     
     return(
       <View className="flex-1">

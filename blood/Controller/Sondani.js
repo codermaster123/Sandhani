@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 
 import jwt from "jsonwebtoken";
 import Sandhani from "../Model/Sandhani.js";
+
 import cloudinary from "cloudinary";
 cloudinary.v2.config({
   cloud_name: "dl0rkcikg",
@@ -35,9 +36,13 @@ export async function imgHamdler(req, res) {
 }
 
 export async function registerUser(req, res) {
-  const oldUser = await User.findOne({ email: req.body.email });
+  const oldUser = await User.findOne({
+    email: req.body.email
+  });
   if (oldUser) {
-    return res.status(400).json({ message: "User already exists" });
+    return res.status(400).json({
+      message: "User already exists"
+    });
   } else {
     const hashedPass = await bcrypt.hash(req.body.password, 10);
     const newUser = await User.create({
@@ -49,9 +54,12 @@ export async function registerUser(req, res) {
   }
 }
 
+
 export async function Login(req, res) {
-  const user= await User.find({ name: req.body.name });
-  
+  const user = await User.find({
+    name: req.body.name
+  });
+
   if (user) {
     const isValidPass = await bcrypt.compare(
       req.body.password,
@@ -67,21 +75,34 @@ export async function Login(req, res) {
       );
       res.status(200).json(token);
     } else {
-      res.status(400).json({ error: "Authentication failed" });
+      res.status(400).json({
+        error: "Authentication failed"
+      });
     }
   } else {
-    res.status(400).json({ error: "AuthenticationU failed" });
+    res.status(400).json({
+      error: "AuthenticationU failed"
+    });
   }
 }
 export async function AddSandhani(req, res) {
-  const user=await User.findOne({_id:req.userId});
-  if(user.sandhani){
-    return res.status(400).json({mss:"you have a sandhani already",success:false})
+  const user = await User.findOne({
+    _id: req.userId
+  });
+  if (user.sandhani) {
+    return res.status(400).json({
+      mss: "you have a sandhani already", success: false
+    })
   }
-  
-  
+
+
   const file = req.file;
-  const { name, email, address, amount } = req.body;
+  const {
+    name,
+    email,
+    address,
+    amount
+  } = req.body;
   console.log(req.body)
   console.log(req.userId)
 
@@ -89,30 +110,37 @@ export async function AddSandhani(req, res) {
     const img = await cloudinary.v2.uploader.upload(file.path, {
       folder: "sandhani",
     });
-    
+
     const newSandhani = await Sandhani.create({
       name: name,
       email: email,
       address: address,
-        amount: amount,
+      amount: amount,
       imageUrl: img.secure_url,
     });
-    
+
     const updateUser = await User.updateOne(
-      { _id: req.userId },
+      {
+        _id: req.userId
+      },
       {
         sandhani: newSandhani,
       }
     );
-    
-    res.status(200).json({newSandhani,success:true});
+
+    res.status(200).json({
+      newSandhani, success: true
+    });
   } catch (e) {
-    res.status(400).json({ mss: e });
+    res.status(400).json({
+      mss: e
+    });
   }
-  
-  
-  
+
+
+
 }
+
 export async function AddBloodDetails(req, res) {
   try {
     const addBloodDetails = await Blood.insertMany({
@@ -120,93 +148,166 @@ export async function AddBloodDetails(req, res) {
       amount: req.body.amount,
     });
     const updateSandhani = await Sandhani.updateMany(
-      { _id: req.body.sId },
+      {
+        _id: req.body.sId
+      },
       {
         $push: {
           blood: addBloodDetails,
         },
       }
     );
-    res.status(200).json({ sucess: true });
+    res.status(200).json({
+      sucess: true
+    });
   } catch (e) {
-    res.status(400).json({ error: "faild operations" });
+    res.status(400).json({
+      error: "faild operations"
+    });
   }
 }
 export async function getBloodDetails(req, res) {
-	try {
-	  
-		const data=await Sandhani.findOne({_id:req.params.id}).populate("blood");
-		
-		// console.log(data)
-	  
-	 res.status(200).json({bloodData:data.blood,sucess:true})
-	 
-	} catch (e) {
-		res.status(400).json({sucess:false})
-	}
+  try {
+
+    const data = await Sandhani.findOne({
+      _id: req.params.id
+    }).populate("blood");
+
+    // console.log(data)
+
+    res.status(200).json({
+      bloodData: data.blood, sucess: true
+    })
+
+  } catch (e) {
+    res.status(400).json({
+      sucess: false
+    })
+  }
 
 }
-export async function addSingleBloodDetail(req,res){
+export async function addSingleBloodDetail(req, res) {
   try {
-    const addBlood=await Blood.create({
-    groupName:req.body.name,
-    amount:req.body.amount
-  })
-  // const sandhani=await Sandhani.findOne({_id:req.body.sId});
-  // console.log(sandhani)
-  
-  const updateSandhani=await Sandhani.updateOne({_id:req.body.sId},{
-    $push:{
-      blood:addBlood._id
+    const getSandhani = await Sandhani.findOne({
+      _id: req.body.sId
+    });
+
+    if (getSandhani) {
+      const isBlood = await Blood.findOne({
+        groupName: req.body.name, sandhani: getSandhani._id
+      })
+      
+      if (isBlood) {
+        
+         const upDateBlood = await Blood.updateOne({
+        _id: req.body.sId
+      }, {
+        $push: {
+          amount: req.body.amount,
+        }
+
+      })
+      
+        console.log(upDateBlood)
+      
+        
+        
+        res.status(200).json({
+        mss: "blood already added only blood amount add"
+        });
+      
+
+      } 
+        else{
+        const addBlood = await Blood.create({
+          groupName: req.body.name,
+          amount: req.body.amount,
+          sandhani: getSandhani._id
+
+        })
+      
+      const updateSandhani = await Sandhani.updateOne({
+        _id: req.body.sId
+      }, {
+        $push: {
+          blood: addBlood._id
+        }
+
+      })
+      
+      
+
+      res.status(200).json({
+        updateSandhani, sucess: true
+      })}
+
+    } else {
+      res.status(200).json({
+        mss: "sandhani not found"
+      })
     }
-    
-  })
-  console.log(updateSandhani)
-  res.status(200).json({updateSandhani,sucess:true})
-  
+    // console.log(sandhani)
+
+
   } catch (e) {
-      res.status(400).json({sucess:false});
-      
-    
+    res.status(400).json({e,
+      sucess: false
+    });
+
+
   }
-  
+
 }
-export async function getSandhani(req,res) {
+export async function getSandhani(req, res) {
   try {
-    
-      const Sandhani=await User.findOne({_id:req.userId}).populate("sandhani");
-      res.status(200).json(Sandhani);
-      
-    
+
+    const Sandhani = await User.findOne({
+      _id: req.userId
+    }).populate("sandhani");
+    res.status(200).json(Sandhani);
+
+
   } catch (e) {
-      res.status(400).json({sucess:false});
+    res.status(400).json({
+      sucess: false
+    });
   }
 }
 
 
-export async function getAllSandhani(req,res) {
+export async function getAllSandhani(req, res) {
+  console.log("calling")
   try {
-    const allSandhani=await Sandhani.find({});
-     res.status(200).json(allSandhani)
+    const allSandhani = await Sandhani.find({});
+    res.status(200).json(allSandhani)
   } catch (e) {
-    
-      res.status(400).json({sucess:false})
+
+    res.status(400).json({
+      sucess: false
+    })
   }
-     
+
 }
-export async function getSandhaniBySearch(req,res) {
-  
-  const {q}=req.query
-  if(q=="" || q==" "){
+export async function getSandhaniBySearch(req, res) {
+
+  const {
+    q
+  } = req.query
+  if (q == "" || q == " ") {
     return res.status(200).json(null)
   }
   try {
-    const result=await Sandhani.find({name:{$regex:new RegExp(q),$options:"i"}})
-  
-     res.status(200).json(result)
-    
+    const result = await Sandhani.find({
+      name: {
+        $regex: new RegExp(q), $options: "i"
+      }})
+
+    res.status(200).json(result)
+
   } catch (e) {
-     res.status(400).json({mss:e})
+    res.status(400).json({
+      mss: e
+    })
   }
-  
+
 }

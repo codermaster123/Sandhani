@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import {View,Text,TextInput,TouchableOpacity} from "react-native"
 import Ionicons from "react-native-vector-icons/Ionicons"
+import CardSkeleton from "../Components/Cardskeleton"
 
 import SmallButton from "../Components/SmallButton"
 import Card from "../Components/Card"
@@ -18,15 +19,8 @@ export default function Sreach () {
     const [input,setInput]=useState("");
     const [isEnable,setEnable]=useState(false)
     const [sandhanis,setSandhanis]=useState()
-    
-    const handlePress=()=>{
-          
-        
-      
-    }
-    
-    
-    const  {data,refetch}=useQuery(["search",input],()=>fetcher(`http://localhost:3000/search?q=${input}`),{
+
+    const  {data,isLoading}=useQuery(["search",input],()=>fetcher(`http://localhost:3000/search?q=${input}`),{
       
       refetchOnWindowFocus: false,
       enabled:true,
@@ -82,6 +76,7 @@ export default function Sreach () {
           )
           
         })}
+        {isLoading && <CardSkeleton/>}
       </View>
       </>
       

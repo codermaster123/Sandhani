@@ -1,5 +1,6 @@
 import React from "react";
 import { StatusBar } from 'expo-status-bar';
+import URL from "../URL";
 
 import {NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,6 +9,7 @@ import HomeStack from "./Homestack"
 import SreachStack from "./SreachzStack"
 import AcountStack from "./acountStack";
 import Settings from "../Screen/settings"
+import SearchSereen from "../Screen/SearchScreen"
 
 import Ionicons from "react-native-vector-icons/Ionicons"
 
@@ -35,7 +37,7 @@ export default function BottomTab() {
            <Tab.Screen name='profile' component={AcountStack} options={{tabBarIcon: ({color, size, focused}) => (
             <Ionicons name={focused?"person-circle":"person-circle-outline"} color={color} size={size} />
           )}}/>
-           <Tab.Screen name='settings' component={Settings} options={{tabBarIcon: ({color, size, focused}) => (
+           <Tab.Screen name='settings' component={SearchSereen} options={{tabBarIcon: ({color, size, focused}) => (
             <Ionicons name={focused?"settings":"settings-outline"} color={color} size={size} />
           )}}/>
           

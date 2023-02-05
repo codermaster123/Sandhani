@@ -11,7 +11,12 @@ const BloodSchema = new mongoose.Schema({
      type:String,
     required:true
     
+  },
+  sandhani:{
+    type:mongoose.Types.ObjectId,
+    ref:"sandhani"
   }
+  
   
   
 });
