@@ -9,6 +9,13 @@ import {BsFillLockFill} from "react-icons/bs";
 import Button from "../Components/BigButton";
 
 
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  
+} from '@tanstack/react-query';
+
 
 export default function LoginUser() {
    const [input ,setInput]=useState({name:"",email:"",password:""});
@@ -18,6 +25,19 @@ export default function LoginUser() {
        setInput((prev)=>({...prev,[e.target.name]:e.target.value}));
       
   }
+  
+  
+  const  {data,isLoading}=useQuery(["search",input],()=>fetcher(`http://localhost:3000/search?q=${input}`),{
+      
+      refetchOnWindowFocus: false,
+      enabled:true,
+      onSuccess(data){
+        
+        
+      }
+      
+    })
+    
   
    const handleSubmit=async(e)=>{
        

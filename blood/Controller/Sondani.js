@@ -56,9 +56,11 @@ export async function registerUser(req, res) {
 
 
 export async function Login(req, res) {
-  const user = await User.find({
+  try {
+     const user = await User.find({
     name: req.body.name
   });
+  
 
   if (user) {
     const isValidPass = await bcrypt.compare(
@@ -84,6 +86,13 @@ export async function Login(req, res) {
       error: "AuthenticationU failed"
     });
   }
+  
+  } catch (e) {
+    res.status(400).json({
+      error:"Authentication failed"
+    })
+  }
+  
 }
 export async function AddSandhani(req, res) {
   const user = await User.findOne({
@@ -196,23 +205,13 @@ export async function addSingleBloodDetail(req, res) {
       const isBlood = await Blood.findOne({
         groupName: req.body.name, sandhani: getSandhani._id
       })
+      console.log(isBlood)
       
       if (isBlood) {
         
-         const upDateBlood = await Blood.updateOne({
-        _id: req.body.sId
-      }, {
-        $push: {
-          amount: req.body.amount,
-        }
-
-      })
-      
-        console.log(upDateBlood)
-      
         
         
-        res.status(200).json({
+        res.status(400).json({
         mss: "blood already added only blood amount add"
         });
       
@@ -310,4 +309,21 @@ export async function getSandhaniBySearch(req, res) {
     })
   }
 
+}
+export async function updateBlood(req,res) {
+    const {id}=req.params;
+    const {name,amount}=req.body;
+    
+    try {
+      const getBlood=await Blood.updateOne({_id:id},{
+        $set:{
+          groupName:name,
+          amount:amount
+        }
+      });
+       console.log(getBlood)
+    
+    } catch (e) {}
+    
+    res.status(200).json({mss:"hi"})
 }

@@ -6,6 +6,10 @@ const UserSchema = new mongoose.Schema({
     type:String,
     required:true
   },
+  img:{
+    type:String,
+    required:true
+  },
   phone:{
     type:String,
     required:true
@@ -25,11 +29,11 @@ const UserSchema = new mongoose.Schema({
     type:String,
     required:true
   },
-  
   sandhani:{
     type:mongoose.Types.ObjectId,
     ref:"sandhani"
   }
+  
   
 });
 

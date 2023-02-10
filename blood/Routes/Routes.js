@@ -4,9 +4,9 @@ import express,{Router} from "express";
 
 import {checkLogin} from "../MiddleWare/CheckLogin.js";
 // import {translator} from "../MiddleWare/translator.js"
-import  {getSandhaniBySearch,getAllSandhani,imgHamdler,registerUser,Login,AddSandhani,addSingleBloodDetail,getBloodDetails,getSandhani}  from "../Controller/Sondani.js"
+import  {updateBlood,getSandhaniBySearch,getAllSandhani,imgHamdler,registerUser,Login,AddSandhani,addSingleBloodDetail,getBloodDetails,getSandhani}  from "../Controller/Sondani.js"
 
-import {userRegistation,searchByUser} from "../Controller/appUser.js"
+import {userRegistation,searchByUser,userSelectedSandhani} from "../Controller/appUser.js"
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads');
@@ -39,6 +39,8 @@ route.get("/getAllSandhani",getAllSandhani);
 route.get("/search",getSandhaniBySearch);
 route.post("/addDonar",upload.single("User"),userRegistation)
 route.post("/searchByUser",searchByUser)
+route.put("/updateBlood/:id",checkLogin,updateBlood)
+route.post("/userUpdate",userSelectedSandhani)
 
 
 export default route;

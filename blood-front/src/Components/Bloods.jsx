@@ -62,7 +62,7 @@ function BloodDetail(props) {
 	     {bloods && bloods.map((blood)=>{
 	     	
 	     	return(
-	     	<Blood name={blood.groupName} amount={blood.amount}/>
+	     	<Blood key={blood._id} id={blood._id} name={blood.groupName} amount={blood.amount}/>
 	     	)
 	       
 	     })}

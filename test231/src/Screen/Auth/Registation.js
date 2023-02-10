@@ -27,8 +27,7 @@ import fetcher from "../../utilis/fetcher"
 import Input from "../../Components/Input";
 import Link from "../../Components/Link";
 import BigButton from "../../Components/BigButton";
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function SignUp( {
   navigation
 }) {
@@ -44,6 +43,7 @@ export default function SignUp( {
   const onTap = ()=> {
 
     navigation.navigate("Login");
+    
   }
 
 
@@ -59,61 +59,12 @@ export default function SignUp( {
     onSuccess(data) {
       console.log(data)
     }
+    
 
 
   })
-
-
-
-
-  const onButtonTap = async()=> {
-
-    // let formData = new FormData();
-    // formData.append('file', {
-    //   uri: "cmcm", name: 'image.jpg', type: 'image/jpg'
-    // });
-    
-    // formData.append('upload_preset', 'your_upload_preset');
-
-    // // data.append("u","vmmv")
-
-
-    // let options = {
-    //   method: 'POST',
-    //   body: formData,
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    // };
-
-    // let response = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', options);
-    // let responseJson = await response.json();
-    // // console.lo/g("res")
-    // // const res= await fetch("http://192.168.0.100:3000/addDonar",{
-
-    // //     method:"POST",
-    // //     headers:{
-    // //     "Content-Type":"application/json",
-    // //   },
-
-    // //     body:data,
-
-    // // })
-    // // const rec=await res.json();
-  let data={todo:"fkvkv,"}
-let res = await fetch("http://localhost:8080/todos",{
-        method:"POST",
-        headers:{
-        "Content-Type":"application/json"
-      },
-      
-      body:JSON.stringify(data)})
-  let response= await res.json();
   
-console.log(response)
 
-  }
   const handleInput = (input, text)=> {
     setInput((prev)=>({
       ...prev, [input]: text
@@ -122,14 +73,20 @@ console.log(response)
 
   }
   const handleAddTask=async()=>{
+    console.log("vkfmfn")
   let data=new FormData()
    console.log(image)
+    
+    data.append("name",input.name)
     data.append('User', {
       uri:image, name: 'image.jpg', type: 'image/jpg'
     });
     
-    
-   
+    data.append("phone",input.phone)
+    data.append("bloodGroup",input.bloodGroup)
+    data.append("address",input.address)
+    data.append("password",input.Password)
+  
   let res = await fetch("http://localhost:3000/addDonar",{
     method:'POST',
       
@@ -140,7 +97,11 @@ console.log(response)
   })
       
   let response= await res.json();
+  console.log(response);
   
+  const t=await AsyncStorage.setItem("userToken",response.token);
+  navigation.navigate("select");
+    
   
   }
   
@@ -205,9 +166,6 @@ console.log(response)
            </View>
                 <TouchableOpacity activeOpacity={0.7} className=" bg-red-700 h-10 p-2  m-2  rounded-lg justify-center items-center  " onPress={handleAddTask}><Text className="text-white">sing up</Text></TouchableOpacity>
          </ScrollView>
-
-
-
   )
 
 }
