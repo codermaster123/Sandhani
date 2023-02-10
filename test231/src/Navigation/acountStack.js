@@ -2,6 +2,8 @@ import { createStackNavigator,CardStyleInterpolators,TransitionPresets } from '@
 import Login from "../Screen/Auth/Login"
 import Registaton from "../Screen/Auth/Registation"
 import SelectSandhani from "../Screen/Select"
+import profile from "../Screen/Profile"
+import Profile from '../Screen/Profile';
 const HStack=createStackNavigator();
 export default function HomeStack() {
   return (
@@ -9,7 +11,7 @@ export default function HomeStack() {
       
       <HStack.Screen name="Registaton" component={Registaton} />
       <HStack.Screen name="Login" component={Login} />
-      <HStack.Screen name="select" component={SelectSandhani} />
+      <HStack.Screen name="Profile" component={Profile} />
       
   	</HStack.Navigator>
       

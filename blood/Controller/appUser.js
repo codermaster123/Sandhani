@@ -10,9 +10,9 @@ cloudinary.v2.config({
 });
 
 export  async function  userRegistation(req,res) {
-   
+   console.log(req.body)
    const file=req.file
-   console.log(file)
+
    const oldUser=await User.findOne({phone:req.body.phone})
   if(oldUser){
      return res.status(400).json({
@@ -27,14 +27,29 @@ export  async function  userRegistation(req,res) {
       folder: "appUser",
     });
     const hashPassword=await bcrypt.hash(req.body.password,10);
+    const findSandhani=await Sandhani.findOne({ address:req.body.district})
     const newUser=await User.create({
       name:req.body.name,
       img:img.secure_url,
       phone:req.body.phone,
       bloodGroup:req.body.bloodGroup,
+      age:req.body.age,
       address:req.body.address,
-      password:hashPassword
+      district:req.body.district,
+      upazila:req.body.upazila,
+      password:hashPassword,
+      isDonted:false,
+   
+      sandhani:findSandhani
     });
+  
+  const updateSandani=await Sandhani.updateOne({ address:req.body.district},{
+
+    $push:{
+      register:newUser._id
+    }
+
+  })
     console.log(newUser)
       const token=await jwt.sign({
     	userName:newUser.name,
@@ -69,6 +84,7 @@ export  async function userLogin(req,res) {
 	}
 }
 export async function userSelectedSandhani(req,res){
+     console.log(req);
     try {
          const decoded=jwt.verify(req.body.token, "appUser");
          
@@ -80,10 +96,11 @@ export async function userSelectedSandhani(req,res){
              register:findUser._id
            }
          });
+         console.log(getSandhani)
          if(getSandhani.acknowledged){
          const upDateUser=await User.updateOne({_id:userId},{
           
-            sandhani:getSandhani.req.body.id
+            sandhani:req.body.id
           }
         );
         
@@ -115,8 +132,20 @@ export  async function searchByUser(req,res){
     }
     
     res.status(200).json(allBlood);
+}
+
+export async function getUserDetails(req,res){
+  try {
+    console.log(req.params.token)
+    const decoded=jwt.verify(req.params.token, "appUser");
+         
+    const {userName,userId}=decoded;
     
-    
-    
-    
+    const findUser=await User.findOne({_id:userId}).populate("sandhani");
+    res.status(200).json(findUser)
+  } catch (e) {
+    res.status(400).json({mss:"User dont find",success:false})
+  }
+
+
 }

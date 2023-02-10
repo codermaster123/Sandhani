@@ -18,16 +18,35 @@ const UserSchema = new mongoose.Schema({
     type:String,
     required:true
   },
-  
+  age:{
+      type:String,
+      required:true     
+  },
   address:{
     type:String,
     required:true
     
   },
-  
+  district:{
+    type:String,
+    required:true
+  },
+  upazila:{
+    type:String,
+    required:true
+  },
   password:{
     type:String,
     required:true
+  },
+  isDonted:{
+    type:Boolean,
+    required:true
+  },
+  donateDate:{
+     type:Date,
+     required:false
+
   },
   sandhani:{
     type:mongoose.Types.ObjectId,

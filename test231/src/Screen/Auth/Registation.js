@@ -14,7 +14,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Pressable
+  Pressable,
+  
 } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import * as ImagePicker from 'expo-image-picker';
@@ -28,15 +29,21 @@ import Input from "../../Components/Input";
 import Link from "../../Components/Link";
 import BigButton from "../../Components/BigButton";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import URL from '../../URL';
+import {Dropdown} from 'react-native-element-dropdown';
 export default function SignUp( {
   navigation
 }) {
+  const [isFocus, setIsFocus] = useState(false);
+  const [district, setDistrict] = useState(null);
+  const [upazila, setUpazila] = useState(null);
+  
   const [image,
     setImage] = useState(null);
 
   const [input,
     setInput] = useState({
-      name: "", phone: "", bloodGroup: "", address: "", Password: ""
+      name: "", phone: "", bloodGroup: "",age:"", address: "", Password: ""
     })
   const [error,
     setError] = useState(false)
@@ -48,7 +55,7 @@ export default function SignUp( {
 
 
 
-  const mutation = useMutation((param)=>fetcher("http://192.168.0.100:3000/addDonar", {
+  const mutation = useMutation((param)=>fetcher(`http://192/addDonar`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -73,10 +80,9 @@ export default function SignUp( {
 
   }
   const handleAddTask=async()=>{
-    console.log("vkfmfn")
+  
   let data=new FormData()
-   console.log(image)
-    
+   
     data.append("name",input.name)
     data.append('User', {
       uri:image, name: 'image.jpg', type: 'image/jpg'
@@ -85,9 +91,12 @@ export default function SignUp( {
     data.append("phone",input.phone)
     data.append("bloodGroup",input.bloodGroup)
     data.append("address",input.address)
+    data.append("age",input.age)
+    data.append("district",district)
+    data.append("upazila", upazila);
     data.append("password",input.Password)
   
-  let res = await fetch("http://localhost:3000/addDonar",{
+  let res = await fetch(`${URL}/addDonar`,{
     method:'POST',
       
       
@@ -100,7 +109,7 @@ export default function SignUp( {
   console.log(response);
   
   const t=await AsyncStorage.setItem("userToken",response.token);
-  navigation.navigate("select");
+  navigation.navigate("Profile",{token:response.token});
     
   
   }
@@ -157,7 +166,53 @@ export default function SignUp( {
             <Input placeholder="Enter your Name" label="Name" IconName="account-box-outline" onChangeText={(text)=>handleInput("name", text)} error={error?"please enter your correct Details ": null} />
             <Input placeholder="+880" label="Phone" IconName="phone" onChangeText={(text)=>handleInput("phone", text)} error={error?"please enter your correct Details ": null} />
              <Input placeholder="Enter your blood group" label="Blood group" IconName="blood-bag" onChangeText={(text)=>handleInput("bloodGroup", text)} error={error?"please enter your correct Details ": null} />
-            <Input placeholder="Enter your Address" label="Address" IconName="home-outline" onChangeText={(text)=>handleInput("address", text)} error={error?"please enter your correct Details ": null} />
+             <Input placeholder="Enter your  age" label="Age" IconName="calendar-account-outline" onChangeText={(text)=>handleInput("age", text)} error={error?"please enter your correct Details ": null} />
+             
+             <Input placeholder="Enter your  address" label="parmanent Adress" IconName="home-outline" onChangeText={(text)=>handleInput("address", text)} error={error?"please enter your correct Details ": null} />
+             
+             <Text className="text-lg my-2 text-gray-300">Present Address(Donation Area)</Text>
+             <Dropdown
+          style={[styles.dropdown, isFocus && {borderColor: 'red'}]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={[{label:"sirajganj",value:"sirajganj"}]}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select District' : '...'}
+          searchPlaceholder="Search..."
+          value={district}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setDistrict((prev)=>item.value)
+            setIsFocus(false);
+          }}
+        />
+                 <Dropdown
+          style={[styles.dropdown, isFocus && {borderColor: 'red'}]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={[{label:"kazipur",value:"kazipur"}]}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select Upazila' : '...'}
+          searchPlaceholder="Search..."
+          value={upazila}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+             setUpazila(item.value)
+            setIsFocus(false);
+          }}
+        />
             <Input placeholder="Enter your Password" label="password" IconName="lock-outline" password onChangeText={(text)=>handleInput("password", text)} error={error?"please enter your correct Details ": null} />
             </View>
             <View className="w-full  flex-row ml-2">
@@ -169,3 +224,47 @@ export default function SignUp( {
   )
 
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 16,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    marginBottom: 10,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});
