@@ -9,8 +9,8 @@ export default function Card({sandhani,onClick}) {
       
               <Animated.View>         
               <View className="flex-row items-center">
-              <View className="border rounded-full border-red-700 m-2" >
-               <Image  className="w-20 m-2 h-20 border-2 border-red-300 rounded-full " source={{uri:sandhani.imageUrl}}/>
+              <View className=" rounded-full m-2" >
+               <Image  className="w-20 m-2 h-20  rounded-full " source={{uri:sandhani.imageUrl}}/>
               </View>
               <Text className="text-xl font-bold text-center ">{sandhani?.name}</Text>
               

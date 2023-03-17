@@ -1,10 +1,15 @@
-import {useState} from "react"
-import {View,Text,Image} from "react-native";
+import {useState,useEffect} from "react"
+import {View,Text,Image,InteractionManager,ActivityIndicator} from "react-native";
 import SmallButton from "../Components/SmallButton"
+import LoadingIndicator from "../Components/LoadingIndicator"
 
 import BloodDetails from "../Components/BloodDetails"
+import User from "../Components/User"
 export default function Details({navigation,route}) {
-  const [toggle,setToggle]=useState(0) 
+  console.log("card details")
+  const [toggle,setToggle]=useState(1) 
+  const [loading,setLoading]=useState(true);
+  
   const {sandhani}=route.params;
   
     const onChange=(t)=>{
@@ -12,12 +17,23 @@ export default function Details({navigation,route}) {
        setToggle((prev)=>t)
       
     }
-    
+        useEffect(()=>{
+        InteractionManager.runAfterInteractions(()=>{
+              setLoading((prev)=>!prev);
+              
+          
+          
+        })
+    },[])
+    if(loading){
+          return <LoadingIndicator/>
+    }
+
    return (
      <>
      <View className="w-full bg-white">
          <View className="flex-col items-center">
-            <Image  className="mx-auto w-20 m-2 h-20 border-2 border-red-700 rounded-full " source={{uri:sandhani.imageUrl}}/>
+            <Image  className="mx-auto w-20 m-2 h-20  rounded-full " source={{uri:sandhani.imageUrl}}/>
               <Text className="text-xl font-bold text-center ">{sandhani?.name}</Text>
          </View>
          <View className="flex-row mt-4  pb-2 w-full border-dashed border-b">
@@ -35,7 +51,7 @@ export default function Details({navigation,route}) {
             <View className="w-full flex-row">
               <View className="w-1/2"><SmallButton name="Blood" onClick={()=>onChange(1)}/></View>
              
-             <View className="w-1/2"><SmallButton name="user" onClick={()=>onChange(2)}/></View>
+             <View className="w-1/2"><SmallButton name="Donar" onClick={()=>onChange(2)}/></View>
             
             </View>
             <View>
@@ -43,7 +59,9 @@ export default function Details({navigation,route}) {
             </View>
              
      </View>
-       <BloodDetails sId={sandhani._id}/>
+       {toggle==1 &&<BloodDetails sId={sandhani._id}/>}
+       {toggle==2 &&<User/>}
+      
     </>   
      )
 }

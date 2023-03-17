@@ -16,126 +16,51 @@ import {
 } from '@tanstack/react-query';
 import fetcher from "../utilis/fetcher"
 import URL from "../URL";
+import LoadingIndicator from "../Components/LoadingIndicator"
 
-//import {BASE_URL, API_KEY} from '@env';
 
-const App = () => {
-  const [sandhaniData, setSandhaniData] = useState([{label:"A+",value:"A+"}]);
-  const [stateData, setStateData] = useState([]);
-  const [cityData, setCityData] = useState([]);
-  const [country, setCountry] = useState(null);
-  const [state, setState] = useState(null);
-  const [city, setCity] = useState(null);
-  const [countryName, setCountryName] = useState(null);
-  const [stateName, setStateName] = useState(null);
-  const [cityName, setCityName] = useState(null);
+const App = ({navigation}) => {
+  
+  
+  const [blood, setBlood] = useState(null);
+  const [district, setDistrict] = useState(null);
+  const [upazila, setUpazila] = useState(null);
+  const [data,setData]=useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  useEffect(() => {
-    // var config = {
-    //   method: 'get',
-    //   url: `${BASE_URL}/countries`,
-    //   headers: {
-    //     'X-CSCAPI-KEY': API_KEY,
-    //   },
-    // };
+   const {mutate,isLoading} = useMutation((param)=>fetcher(`${URL}/searchByUser`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
 
-    // axios(config)
-    //   .then(response => {
-    //     console.log(JSON.stringify(response.data));
-    //     var count = Object.keys(response.data).length;
-    //     let countryArray = [];
-    //     for (var i = 0; i < count; i++) {
-    //       countryArray.push({
-    //         value: response.data[i].iso2,
-    //         label: response.data[i].name,
-    //       });
-    //     }
-    //     setCountryData(countryArray);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-      
-  }, []);
-  const  {data,isLoading}=useQuery(["getQuery"],()=>fetcher(URL+"/getAllSandhani"),{
-      
-      refetchOnWindowFocus: false,
-      enabled:true,
-      onSuccess(data){
-        for(items in data){
-          
-          let obj={
-            label:data[items].address,
-            value:data[items].address
-          }
-          setStateData((prev)=>[...prev,obj])
-        }
-        
-      }
-      
-      
-    })
-    
-  const handleState = countryCode => {
-    // var config = {
-    //   method: 'get',
-    //   url: `${BASE_URL}/countries/${countryCode}/states`,
-    //   headers: {
-    //     'X-CSCAPI-KEY': API_KEY,
-    //   },
-    // };
-
-    // axios(config)
-    //   .then(function (response) {
-    //     console.log(JSON.stringify(response.data));
-    //     var count = Object.keys(response.data).length;
-    //     let stateArray = [];
-    //     for (var i = 0; i < count; i++) {
-    //       stateArray.push({
-    //         value: response.data[i].iso2,
-    //         label: response.data[i].name,
-    //       });
-    //     }
-    //     setStateData(stateArray);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-      
-  };
-
-  const handleCity = (countryCode, stateCode) => {
-    // var config = {
-    //   method: 'get',
-    //   url: `${BASE_URL}/countries/${countryCode}/states/${stateCode}/cities`,
-    //   headers: {
-    //     'X-CSCAPI-KEY': API_KEY,
-    //   },
-    // };
-
-    // axios(config)
-    //   .then(function (response) {
-    //     console.log(JSON.stringify(response.data));
-    //     var count = Object.keys(response.data).length;
-    //     let cityArray = [];
-    //     for (var i = 0; i < count; i++) {
-    //       cityArray.push({
-    //         value: response.data[i].id,
-    //         label: response.data[i].name,
-    //       });
-    //     }
-    //     setCityData(cityArray);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-      
-  };
+    body: JSON.stringify(param),
+  }), {
+    onSuccess(data) {
+        navigation.navigate("Details",{sandhani:data});
   
-
+    },
+  })
+  
+  const handleSubmit=async()=>{
+    const data={blood,district,upazila};
+    await mutate(data);
+    
+    
+    
+  }
+  const handleClick=(s)=>{
+      console.log("a")
+    
+  }
+  if(isLoading){
+      return <LoadingIndicator/>
+  }
+  
   return (
-    <View style={styles.container}>
+    <>
+    
+  <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <View className="bg-white shadow-xl shadow-red-700" style={{ padding: 20, borderRadius: 15}}>
         <Dropdown
@@ -144,20 +69,41 @@ const App = () => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={sandhaniData}
+          data={[{label:"A+",value:"A+"},{label:"B+",value:"B+"}]}
           search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select blood' : '...'}
           searchPlaceholder="Search..."
-          value={country}
+          value={blood}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
-            setCountry(item.value);
-            handleState(item.value);
-            setCountryName(item.label);
+            setBlood(item.value);
+            setIsFocus(false);
+            
+          }}
+        />
+        <Dropdown
+          style={[styles.dropdown, isFocus && {borderColor: 'red'}]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={[{label:"sirajganj",value:"sirajganj"}]}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select District' : '...'}
+          searchPlaceholder="Search..."
+          value={district}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setDistrict(item.value);
+            
             setIsFocus(false);
           }}
         />
@@ -167,23 +113,24 @@ const App = () => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={stateData}
+          data={[{label:"Kazipur",value:"kazipur"}]}
           search
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? 'Select area' : '...'}
+          placeholder={!isFocus ? 'Select Upazila' : '...'}
           searchPlaceholder="Search..."
-          value={state}
+          value={upazila}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
-            setState(item.value);
-            handleCity(country, item.value);
-            setStateName(item.label);
+            setUpazila(item.value);
+            
             setIsFocus(false);
           }}
         />
+        
+        
         
         <TouchableOpacity
         className="bg-red-700"
@@ -193,11 +140,7 @@ const App = () => {
             borderRadius: 15,
             alignItems: 'center',
           }}
-          onPress={() =>
-            Alert.alert(
-              `You have selected\nCountry: ${countryName}\nState: ${stateName}\nCity: ${cityName}`,
-            )
-          }>
+          onPress={handleSubmit}>
           <Text
             style={{
               color: '#fff',
@@ -209,6 +152,9 @@ const App = () => {
         </TouchableOpacity>
       </View>
     </View>
+  
+  
+    </>
   );
 };
 

@@ -28,19 +28,19 @@ const Stack=createStackNavigator();
 export default function App() {
   const [wScreen,setScreen]=useState(true);
   
-  const [fontLoad]=useFonts({
-    Kalpurush:require("./fonts/Kalpurush.ttf")
-  })
-  if(!fontLoad){
-    return <AppLoading/>
-  }
+  // const [fontLoad]=useFonts({
+  //   Kalpurush:require("./fonts/Kalpurush.ttf")
+  // })
+  // if(!fontLoad){
+  //   return <AppLoading/>
+  // }
 
   return (
     <QueryClientProvider client={client}>
      <StatusBar style="dark" />
      
     <NavigationContainer>
-      <Stack.Navigator  screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,headerShown: false}}>
+      <Stack.Navigator  screenOptions={{headerShown: false}}>
       
       <Stack.Screen name="Welcome">{(props)=> <Welcome  {...props}/>}</Stack.Screen>
       <Stack.Screen name="Tab" component={Tab} />

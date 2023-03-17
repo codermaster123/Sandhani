@@ -55,6 +55,7 @@ const UserSchema = new mongoose.Schema({
   
   
 });
+UserSchema.index({ bloodGroup:"text"  }); // create index on 'name' field
 
 
 const User= mongoose.model('User', UserSchema);

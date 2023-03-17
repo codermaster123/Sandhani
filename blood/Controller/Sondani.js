@@ -112,8 +112,6 @@ export async function AddSandhani(req, res) {
     address,
     amount
   } = req.body;
-  console.log(req.body)
-  console.log(req.userId)
 
   try {
     const img = await cloudinary.v2.uploader.upload(file.path, {
@@ -136,9 +134,11 @@ export async function AddSandhani(req, res) {
         sandhani: newSandhani,
       }
     );
+    const sandhaniToken=await jwt.sign({sandhaniId:newSandhani._id},"sandan");
+    
 
     res.status(200).json({
-      newSandhani, success: true
+      newSandhani, token:sandhaniToken
     });
   } catch (e) {
     res.status(400).json({
@@ -326,4 +326,13 @@ export async function updateBlood(req,res) {
     } catch (e) {}
     
     res.status(200).json({mss:"hi"})
+}
+
+export async function deleteBloods(req,res){
+    console.log(req.body.deleteBloods)
+  try {
+     const del=  await Blood.deleteMany({_id:{$in:req.body.deletedBloods}})
+        res.status(200).json(del)
+  } catch (e) {}
+  
 }

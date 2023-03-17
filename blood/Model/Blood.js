@@ -21,6 +21,7 @@ const BloodSchema = new mongoose.Schema({
   
 });
 
+BloodSchema.index({ groupName: 1 }); // create index on 'name' field
 
 const blood= mongoose.model('Blood', BloodSchema);
 

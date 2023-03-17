@@ -1,13 +1,14 @@
 import { createStackNavigator,CardStyleInterpolators,TransitionPresets } from '@react-navigation/stack';
-import Sreach from "../Screen/Sreach"
-import Details from "../Screen/Details"
+import Search from "../Screen/SearchScreen"
+
+import Card from "../Components/SearchCard"
 
 const HStack=createStackNavigator();
 export default function SreachStack() {
   return (
     <HStack.Navigator  screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,headerShown: false}}>
-      <HStack.Screen name="Sreach" component={Sreach} />
-      <HStack.Screen name="Details" component={Details} />
+      <HStack.Screen name="Search" component={Search} />
+      <HStack.Screen name="Details" component={Card} />
       
   </HStack.Navigator>
       

@@ -3,7 +3,7 @@ import {
 } from 'expo-status-bar';
 import React from 'react';
 import {
-  useState
+  useState,useEffect,useContext
 } from "react";
 
 import {
@@ -15,6 +15,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
+  InteractionManager,
+  ActivityIndicator
   
 } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -24,20 +26,29 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import fetcher from "../../utilis/fetcher"
+import LoadingIndicator from "../../Components/LoadingIndicator"
 
 import Input from "../../Components/Input";
 import Link from "../../Components/Link";
+
 import BigButton from "../../Components/BigButton";
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import URL from '../../URL';
 import {Dropdown} from 'react-native-element-dropdown';
+
+import {AuthContext} from "../../../Context";
 export default function SignUp( {
-  navigation
+  navigation,route
 }) {
+  const {login}=useContext(AuthContext);
+  
   const [isFocus, setIsFocus] = useState(false);
   const [district, setDistrict] = useState(null);
   const [upazila, setUpazila] = useState(null);
-  
+  const [loading,setLoading]=useState(true);
+  const [isLoading,setisLoading]=useState(true);
+  const [bloodGroup,setBloodGroup]=useState(null)
   const [image,
     setImage] = useState(null);
 
@@ -54,23 +65,6 @@ export default function SignUp( {
   }
 
 
-
-  const mutation = useMutation((param)=>fetcher(`http://192/addDonar`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-
-    body: param,
-  }), {
-    onSuccess(data) {
-      console.log(data)
-    }
-    
-
-
-  })
-  
 
   const handleInput = (input, text)=> {
     setInput((prev)=>({
@@ -89,7 +83,7 @@ export default function SignUp( {
     });
     
     data.append("phone",input.phone)
-    data.append("bloodGroup",input.bloodGroup)
+    data.append("bloodGroup",bloodGroup)
     data.append("address",input.address)
     data.append("age",input.age)
     data.append("district",district)
@@ -106,12 +100,11 @@ export default function SignUp( {
   })
       
   let response= await res.json();
-  console.log(response);
-  
-  const t=await AsyncStorage.setItem("userToken",response.token);
-  navigation.navigate("Profile",{token:response.token});
+  setisLoading((prev)=>!prev);
+  login(response.token)
+  //navigation.navigate("Profile",{token:response.token});
     
-  
+     
   }
   
   const handleError = ()=> {
@@ -119,9 +112,6 @@ export default function SignUp( {
     Object.keys(input).map((key)=> {
       if (input[key] == "" || input[key].length <= 0) {
         setError(true);
-
-
-
         return error
       }
       setError(false);
@@ -143,8 +133,20 @@ export default function SignUp( {
 
       setImage(result.assets[0].uri);
     }}
+    useEffect(()=>{
+        InteractionManager.runAfterInteractions(()=>{
+              setLoading((prev)=>!prev);
+              
+          
+          
+        })
+    },[])
+    if(loading){
+          return <LoadingIndicator/>
+    }
 
   return (
+    
 
     <ScrollView className="px-2 bg-white flex-1">
             <View className="p-2">
@@ -157,7 +159,7 @@ export default function SignUp( {
       }
             {image &&
       <View classNam="">
-               <Image source={ { uri: image }} className="w-20 m-2 h-20 border-2 border-red-300 rounded-full " />
+               <Image source={ { uri: image }} className="w-20 m-2 h-20 rounded-full " />
                  <Ionicons name="camera" onPress={handleImagePicker} color="white" style={ { position: "absolute", bottom: 0, right: 0, fontSize: 20, textAlign: "center", backgroundColor: "gray", width: 20, height: 20, zIndex: 999, opacity: 0.7, borderRadius: 100, overflow: 'hidden' }} />
            </View>
 
@@ -165,12 +167,37 @@ export default function SignUp( {
           </View>
             <Input placeholder="Enter your Name" label="Name" IconName="account-box-outline" onChangeText={(text)=>handleInput("name", text)} error={error?"please enter your correct Details ": null} />
             <Input placeholder="+880" label="Phone" IconName="phone" onChangeText={(text)=>handleInput("phone", text)} error={error?"please enter your correct Details ": null} />
-             <Input placeholder="Enter your blood group" label="Blood group" IconName="blood-bag" onChangeText={(text)=>handleInput("bloodGroup", text)} error={error?"please enter your correct Details ": null} />
-             <Input placeholder="Enter your  age" label="Age" IconName="calendar-account-outline" onChangeText={(text)=>handleInput("age", text)} error={error?"please enter your correct Details ": null} />
+                 <Text className="text-lg my-2 text-gray-300">Present Address(Donation Area)</Text>
+             
+                  <Dropdown
+          style={[styles.dropdown, isFocus && {borderColor: 'red'}]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={[{label:"B+",value:"B+"}]}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select Blood group' : '...'}
+          searchPlaceholder="Search..."
+          value={bloodGroup}
+          // onFocus={() => setIsFocus(true)}
+          // onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            
+            setBloodGroup((prev)=>item.value);
+            
+            
+          }}
+        />
+        <Input placeholder="Enter your  age" label="Age" IconName="calendar-account-outline" onChangeText={(text)=>handleInput("age", text)} error={error?"please enter your correct Details ": null} />
              
              <Input placeholder="Enter your  address" label="parmanent Adress" IconName="home-outline" onChangeText={(text)=>handleInput("address", text)} error={error?"please enter your correct Details ": null} />
              
              <Text className="text-lg my-2 text-gray-300">Present Address(Donation Area)</Text>
+             
              <Dropdown
           style={[styles.dropdown, isFocus && {borderColor: 'red'}]}
           placeholderStyle={styles.placeholderStyle}
@@ -192,6 +219,7 @@ export default function SignUp( {
             setIsFocus(false);
           }}
         />
+        
                  <Dropdown
           style={[styles.dropdown, isFocus && {borderColor: 'red'}]}
           placeholderStyle={styles.placeholderStyle}

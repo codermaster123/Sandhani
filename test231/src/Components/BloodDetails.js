@@ -1,4 +1,4 @@
-import {useState,useEffect} from "react"
+import React, {useState,useEffect} from "react"
 import {View,Text,ScrollView} from "react-native"
 import fetcher from "../utilis/fetcher"
 
@@ -10,8 +10,8 @@ import {
   
 } from '@tanstack/react-query';
 
-export default function BloodDetails({sId}) {
-  
+const BloodDetails=({sId})=> {
+  console.log("blood details")
   const [bloods,setBloods]=useState(null)
     
   const {isLoading}=useQuery(["bloods"],()=>fetcher(`${URL}/getblood/${sId}`,{
@@ -68,3 +68,5 @@ export default function BloodDetails({sId}) {
      </View>
 )
 }
+
+export default React.memo(BloodDetails);

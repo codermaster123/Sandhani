@@ -48,6 +48,7 @@ function BloodDetail(props) {
     
       }
     })
+    
     if(isLoading){
 	      return(<div className="w-full h-80  flex justify-center items-center">
 	         <h1 className="md:text-2xl">No Blood details</h1>

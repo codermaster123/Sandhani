@@ -12,19 +12,20 @@ import Settings from "../Screen/settings"
 import SearchSereen from "../Screen/SearchScreen"
 
 import Ionicons from "react-native-vector-icons/Ionicons"
+import {AuthProvider} from "../../Context"
 
 import Header from "../Components/header"
 const Tab=createBottomTabNavigator();
 
 export default function BottomTab() {
     return (
-      <>
+      <AuthProvider>
        <StatusBar style="light" />
      
        <Tab.Navigator screenOptions={{headerStyle: {
       backgroundColor: "#B91C1C",
       
-      height:70
+      height:85
       
     },headerTintColor: 'white', title: 'Sandhani',headerShown: true,tabBarShowLabel:false,tabBarInactiveTintColor: 'white',tabBarActiveTintColor: 'white',tabBarStyle: {backgroundColor: '#B91C1C',},}}>
         
@@ -37,13 +38,13 @@ export default function BottomTab() {
            <Tab.Screen name='profile' component={AcountStack} options={{tabBarIcon: ({color, size, focused}) => (
             <Ionicons name={focused?"person-circle":"person-circle-outline"} color={color} size={size} />
           )}}/>
-           <Tab.Screen name='settings' component={SearchSereen} options={{tabBarIcon: ({color, size, focused}) => (
+           <Tab.Screen name='settings' component={Settings} options={{tabBarIcon: ({color, size, focused}) => (
             <Ionicons name={focused?"settings":"settings-outline"} color={color} size={size} />
           )}}/>
           
           
           
       </Tab.Navigator>
-      </>
+      </AuthProvider>
     )
 }

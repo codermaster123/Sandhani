@@ -105,7 +105,8 @@ const navigate=useNavigate();
 
           </div>
           <div className="relative top-4">
-          <Submit name="Register"/>
+           <Submit name="Register"/>
+         
           </div>
         </form>
       </div>

@@ -41,6 +41,7 @@ const SandhaniSchema = new mongoose.Schema({
 
 });
 
+SandhaniSchema.index({ address:"text"  }); // create index on 'name' field
 
 
 const user= mongoose.model('sandhani', SandhaniSchema);
