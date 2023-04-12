@@ -28,6 +28,7 @@ export  async function  userRegistation(req, res) {
     const img = await cloudinary.v2.uploader.upload(file.path, {
       folder: "appUser",
     });
+    console.log(req.body.password)
     const hashPassword = await bcrypt.hash(req.body.password, 10);
     const findSandhani = await Sandhani.findOne({
       address: req.body.district
@@ -72,12 +73,19 @@ export  async function  userRegistation(req, res) {
   }
 }
 export  async function userLogin(req, res) {
+
   try {
+
     const isUser = await User.findOne({
       phone: req.body.phone
     })
+
     if (isUser) {
+      console.log(req.body.password)
+      console.log(typeof isUser.password)
       const isValidPassword = await bcrypt.compare(req.body.password, isUser.password)
+
+
       if (isValidPassword) {
         const token = await jwt.sign({
           userName: isUser.name,
@@ -150,54 +158,80 @@ export async function userSelectedSandhani(req, res) {
 }
 export  async function searchByUser(req, res) {
   try {
-    
-  
-  const {
-    blood,
-    district
-  } = req.body;
 
-  const getSandhani = await Sandhani.find({
-    $text: {
-      $search: district
-    }}).populate({
-    path: "blood", match: {
-      groupName: blood
-    }}).populate({path:"register",
-      match:{
-        $text:{$search:blood}
-      }
-    });
 
-  res.status(200).json(getSandhani[0]);
+    const {
+      blood,
+      district
+    } = req.body;
+    const getSandhani = await Sandhani.find({
+      $text: {
+        $search: district
+      }}).populate({
+      path: "blood", match: {
+        groupName: blood
+      }})
+   const totalRes=await User.countDocuments({bloodGroup:blood,sandhani:getSandhani});
+   
+    res.status(200).json({sandhani:getSandhani[0],reg:totalRes});
   } catch (e) {
-       res.status(400).json(e)
+    res.status(400).json(e)
   }
-  
+
 }
 
-export async function getAlluser(req,res){
+export async function getAlluser(req, res) {
   try {
+
+    const {
+      blood,
+      offset,
+      limit
+    } = req.query;
+    console.log("user  "+blood+" ")
+    if (blood != undefined) {
+      const count = await User.countDocuments({
+        bloodGroup: blood
+      });
+      if(count==0){
+        res.status(200).json({data:-1});
+        
+      }else{
     
-    const { offset, limit } = req.query;
+        if (parseInt(offset) >= count) {
+          res.status(200).json({
+            data: 0
+          });
+        } else {
+          console.log("data")
+
+          const data = await User.find({
+            bloodGroup: blood
+          }).skip(parseInt(offset)).limit(parseInt(limit));
+          console.log(data)
+          res.status(200).json(data);
+        }}
+      }
+      else {
+        res.status(200).json({
+          data: 1
+        })
+      }
+      
     
-    
-  const count = await User.countDocuments();
-  if (parseInt(offset) >= count) {
-    res.status(200).json({data:0});
-  } else {
-    const data = await User.find().skip(parseInt(offset)).limit(parseInt(limit));
-    
-    res.status(200).json(data);
-  }
+  
   } catch (e) {
-       res.status(400).json({mss:"some error in fetching"})
+    res.status(400).json({
+      mss: "some error in fetching"
+    })
   }
 }
-export async function userDetails(req,res){
-    try {
-          console.log("user")
-          const data=await User.findOne({_id:req.userId}).populate("sandhani");
-          res.status(200).json(data)
-    } catch (e) {}
+export async function userDetails(req, res) {
+  try {
+
+    const data = await User.findOne({
+      _id: req.userId
+    }).populate("sandhani");
+    res.status(200).json(data)
+  } catch (e) {}
 }

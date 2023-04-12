@@ -5,7 +5,6 @@ import React from 'react';
 import {
   useState,useEffect,useContext
 } from "react";
-
 import {
   StyleSheet,
   Text,
@@ -38,6 +37,7 @@ import URL from '../../URL';
 import {Dropdown} from 'react-native-element-dropdown';
 
 import {AuthContext} from "../../../Context";
+
 export default function SignUp( {
   navigation,route
 }) {
@@ -47,14 +47,14 @@ export default function SignUp( {
   const [district, setDistrict] = useState(null);
   const [upazila, setUpazila] = useState(null);
   const [loading,setLoading]=useState(true);
-  const [isLoading,setisLoading]=useState(true);
+  // const [isLoading,setisLoading]=useState(true);
   const [bloodGroup,setBloodGroup]=useState(null)
   const [image,
     setImage] = useState(null);
 
   const [input,
     setInput] = useState({
-      name: "", phone: "", bloodGroup: "",age:"", address: "", password: ""
+      name: "", phone: "", bloodGroup: "",age:"", address: "", Password: ""
     })
   const [error,
     setError] = useState(false)
@@ -88,8 +88,8 @@ export default function SignUp( {
     data.append("age",input.age)
     data.append("district",district)
     data.append("upazila", upazila);
-    data.append("password",input.password)
-  
+    data.append("password",input.Password)
+  setLoading((prev)=>!prev)
   let res = await fetch(`${URL}/addDonar`,{
     method:'POST',
       
@@ -100,15 +100,17 @@ export default function SignUp( {
   })
       
   let response= await res.json();
-  setisLoading((prev)=>!prev);
-  login(response.token)
+  // setisLoading((prev)=>!prev);
+   
+    setLoading((prev)=>!prev)
+    login(response.token)
+  
   //navigation.navigate("Profile",{token:response.token});
     
      
   }
   
   const handleError = ()=> {
-    console.log("invoke")
     Object.keys(input).map((key)=> {
       if (input[key] == "" || input[key].length <= 0) {
         setError(true);
