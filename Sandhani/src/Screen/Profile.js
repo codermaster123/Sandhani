@@ -15,6 +15,8 @@ import { styled } from 'nativewind';
 import {AuthContext} from "../../Context";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoadingIndicator from "../Components/LoadingIndicator"
+import URL from "../URL";
+
 const StyledPressable = styled(TouchableOpacity)
 const StyledText = styled(Text)
 export default  function Profile({route}) {

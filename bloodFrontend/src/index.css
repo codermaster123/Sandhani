@@ -73,5 +73,5 @@ button:focus-visible {
 @tailwind utilities;
 
 .li{
-  @apply  hover:bg-red-700 hover:text-white p-2 rounded-md hover:scale-110  ease-in duration-300
+  @apply w-full  hover:bg-red-700 hover:text-white p-2 rounded-md hover:scale-110  ease-in duration-300
 }

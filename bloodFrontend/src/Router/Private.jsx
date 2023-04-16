@@ -6,6 +6,7 @@ import useAuth from "../hooks/useAuth"
 export default function PrivateRoute() {
    
    const auth=useAuth();
-   //console.log(auth)
+   console.log(auth)
+   
    return auth ? <Outlet/>:<Navigate to="/newsandhani"/>;
 }

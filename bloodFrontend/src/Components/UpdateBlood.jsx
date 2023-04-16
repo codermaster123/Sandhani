@@ -4,6 +4,7 @@ import {BiAddToQueue} from "react-icons/bi"
 
 import fetcher from "../utilis/Fetcher"
 import {useMutation,useQueryClient,} from "@tanstack/react-query";
+import URL from "../URL";
 
 export default function UpdateBlood({id}) {
         
@@ -13,7 +14,7 @@ export default function UpdateBlood({id}) {
      
   
   
-  const token =localStorage.getItem("token");
+  const token =localStorage.getItem("loginToken");
     
   const handleChange=(e)=>{
 
@@ -22,7 +23,7 @@ export default function UpdateBlood({id}) {
    }
    
     
-   const mutation=useMutation((param)=>fetcher(`http://localhost:3000/updateBlood/${id}`,{
+   const mutation=useMutation((param)=>fetcher(`${URL}/updateBlood/${id}`,{
        method:"PUT",
       headers:{
         "Content-Type":"application/json",

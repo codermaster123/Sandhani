@@ -13,13 +13,16 @@ import {
   
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import {AuthProvider} from "../Context/AuthContext"
 
 import client from "./react-query-client"
 ReactDOM.createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={client}>
+  <AuthProvider>
   <BrowserRouter>
     <App />
     </BrowserRouter>
     <ReactQueryDevtools initialIsOpen={false }/>
+    </AuthProvider>
   </QueryClientProvider>
 )

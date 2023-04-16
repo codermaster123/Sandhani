@@ -4,13 +4,45 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import { HiOutlineMenu } from "react-icons/hi";
 import Router from "../Router";
 import Login from "../Components/LoginModal";
+import URL from "../URL";
 
 
 export default function NavBar() {
   const [open,setOpen]=useState(false)
   const navigate=useNavigate();
+  const [input ,setInput]=useState({name:null,email:null,password:null});
+  const token=localStorage.getItem("sandhaniToken");
+      
+  const handleChange=(e)=>{
+       
+       setInput((prev)=>({...prev,[e.target.name]:e.target.value}));
+      
+  }
   
-  
+  const handleSubmit=async(e)=>{
+       
+       e.preventDefault();
+       console.log("submitting")
+      const res =await fetch(URL+"/login",{
+        method:"POST",
+          headers:{
+        "Content-Type":"application/json"
+      },
+      
+        body:JSON.stringify(input)
+         
+      })
+      const data=await res.json();
+      console.log(data);
+      localStorage.setItem("loginToken",data.token);
+      
+      setInput((prev)=>({...prev,name:""}));
+      setInput((prev)=>({...prev,email:""}));
+      setInput((prev)=>({...prev,password:""}));
+      //navigate("/TLogin")
+     
+   }
+   
   return (
          <div className="drawer">
   <input id="my-drawer-3" type="checkbox" className="drawer-toggle" /> 
@@ -34,14 +66,16 @@ export default function NavBar() {
              <div className="modal" id="my-modal-2">
   <div className="modal-box flex flex-col items-center justify-center ">
     <h3 className="font-bold text-lg text-center">Login</h3>
-     <input type="text" placeholder="Enter your Name" className="m-2 input input-bordered input-error w-full max-w-xs" />
-      <input type="E-mail" placeholder="Enter your Email" className="m-2 input input-bordered input-error w-full max-w-xs" />
-     <input type="password" placeholder="Enter your password" className="m-2 input input-bordered input-error w-full max-w-xs" />
+    <form onSubmit={handleSubmit}>
+     <input type="text" placeholder="Enter your Name" onChange={handleChange} value={input.name}  className="m-2 input input-bordered input-error w-full max-w-xs" />
+      <input type="E-mail" placeholder="Enter your Email" onChange={handleChange} value={input.email} className="m-2 input input-bordered input-error w-full max-w-xs" />
+     <input type="password" placeholder="Enter your password" onChange={handleChange} value={input.password} className="m-2 input input-bordered input-error w-full max-w-xs" />
       
     <div className="modal-action">
     <button className="btn btn-sm py-2 px-8 bg-red-700 hover:bg-red-800 text-white border-red-500 hover:border-red-500 ">Submit</button>
      <a href="#" className="btn btn-sm">close</a>
     </div>
+    </form>
   </div>
 </div>
 
@@ -61,9 +95,9 @@ export default function NavBar() {
     </div>
     <ul className="flex-1 p-6 w-80 space-y-2 bg-white">
     
-      <li className="li"><Link to="/">Get Started</Link></li>
-      <li className="li"><Link to="/about">About</Link></li>
-      <li className="li"><Link>Sandhani</Link></li>
+      <Link  to="/"><li className="li">Get Started</li></Link>
+      <Link to="/about"><li className="li">About</li></Link>
+    {token&&<Link to="/mysandhani"><li className="li">My Sandhani</li></Link>}
       
       
     </ul>

@@ -3,6 +3,7 @@ import React ,{useState}from "react";
 
 import fetcher from "../utilis/Fetcher"
 import {useMutation,useQueryClient,} from "@tanstack/react-query";
+import URL from "../URL";
 
 export default function AddBlood(props) {
   const queryClient=useQueryClient()
@@ -12,9 +13,9 @@ export default function AddBlood(props) {
     
   }
   
-  const token =localStorage.getItem("token");
+  const token =localStorage.getItem("loginToken");
     
-  const mutation=useMutation((param)=>fetcher("http://localhost:3000/Addblood",{
+  const mutation=useMutation((param)=>fetcher(URL+"/Addblood",{
        method:"POST",
       headers:{
         "Content-Type":"application/json",

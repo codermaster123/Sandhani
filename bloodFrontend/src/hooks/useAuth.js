@@ -1,16 +1,16 @@
-import {useState,useEffect} from "react"
+import {useState,useEffect,useContext} from "react"
+import {AuthContext} from "../../Context/AuthContext";
 
 export default  function useAuth() {
   
-   const [auth,setAuth]=useState(true);
-   useEffect(()=>{
-        
-    const token= localStorage.getItem("sandhaniToken");
-    // setAuth((prev)=>{return true});
-  
-   },[])
+   const {sandhaniToken}=useContext(AuthContext);
+   console.log("san "+sandhaniToken)
    
-   
-  return auth;
+   if(sandhaniToken){
+     return true;
+     
+   }else{
+       return false;
+   }
 }
 

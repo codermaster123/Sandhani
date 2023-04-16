@@ -2,13 +2,14 @@ import React from "react"
 import {AiFillDelete} from "react-icons/ai"
 import fetcher from "../utilis/Fetcher"
 import {useMutation,useQueryClient,} from "@tanstack/react-query";
+import URL from "../URL";
 
-export default function DeleteBloods({ids}) {
+export default function DeleteBloods({ids,afterDelete}) {
    const queryClient=useQueryClient()
   
-    const token =localStorage.getItem("token");
+    const token =localStorage.getItem("loginToken");
     
-  const mutation=useMutation((param)=>fetcher("http://localhost:3000/deletebloods",{
+  const mutation=useMutation((param)=>fetcher(URL+"/deletebloods",{
        method:"DELETE",
       headers:{
         "Content-Type":"application/json",
@@ -18,6 +19,7 @@ export default function DeleteBloods({ids}) {
     }),{
       onSuccess:(data)=>{
         console.log(data)
+          afterDelete()
          queryClient.invalidateQueries("bloods")
             
       }

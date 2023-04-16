@@ -2,11 +2,14 @@ import fetcher from "../utilis/Fetcher"
 import {useState,useEffect} from "react";
 import {useQuery} from "@tanstack/react-query"
 import BloodList from "../Components/BloodList"
+import AddBlood from "../Components/AddBlood"
+import URL from "../URL";
 
 function Sandhani() {
   const [sandhani,setSandhani]=useState()
   const [blood,setBlood]=useState(null);
-  const [toggle,setToggle]=useState()
+  const [toggle,setToggle]=useState(0)
+  const [loading,setLoading]=useState(true);
   
    const changeToggle=(index)=>{
        setToggle((prev)=>{
@@ -15,9 +18,9 @@ function Sandhani() {
    }
    
    
-  const token=localStorage.getItem("token");
+  const token=localStorage.getItem("loginToken");
       
-  const {data}=useQuery(["sandhani"],()=>fetcher("http://localhost:3000/Sandhani",{
+  const {data,isLoading}=useQuery(["sandhani"],()=>fetcher(URL"/Sandhani",{
       method:"GET",
       headers:{
         "Content-Type":"application/json",
@@ -29,6 +32,8 @@ function Sandhani() {
         setSandhani((prev)=>{
           return data.sandhani
         })
+        setLoading((prev)=>!prev);
+        
       }
       
     })
@@ -54,7 +59,8 @@ function Sandhani() {
         </div>
         </div>
         
-       { toggle==1 &&<BloodList id={sandhani?._id}/>}
+       { toggle==1 && <BloodList id={sandhani?._id}/>}
+       
         
     </div>
   );

@@ -5,6 +5,7 @@ import Input from "../Components/Input";
 import { FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import {BsFillLockFill} from "react-icons/bs";
+import URL from "../URL";
 
 // import Button from "../Components/BigButton";
 

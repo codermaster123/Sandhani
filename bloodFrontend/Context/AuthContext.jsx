@@ -5,19 +5,31 @@ export const AuthContext=React.createContext();
 
 export const AuthProvider=({children})=>{
      const [token,setToken]=useState(null);
+     const [sandhaniToken,setSandhaniToken]=useState(null);
+     
      const [isLoading,setLoading]=useState(true);
      const [user,setUser]=useState(null);
      
-     const login=async(token)=>{
-       const t=await AsyncStorage.setItem("userToken",token);
+     const loginUser=(token)=>{
+       const t= localStorage.setItem("loginToken",token);
        setToken((prev)=>token);
        setLoading((prev)=>false);
        
      }
-     const isLogin=async()=>{
+     const isLogin=()=>{
          try {
-              const t=await localStorage.getItem("userToken");
+              const t=localStorage.getItem("loginToken");
+              const t2=localStorage.getItem("sandhaniToken");
+                console.log("t "+t2)
+              
+              if(t){
               setToken((prev)=>t);
+              }
+              if(t2){
+              setSandhaniToken((prev)=>t2);
+              
+              }
+              
               setLoading((prev)=>false);
        
          } catch (e) {
@@ -27,9 +39,10 @@ export const AuthProvider=({children})=>{
      }
      useEffect(()=>{
        isLogin()
+       
      },[])
      return (
-       <AuthContext.Provider value={{login,isLoading,token}}>
+       <AuthContext.Provider value={{loginUser,isLoading,token,sandhaniToken}}>
        {children}
        </AuthContext.Provider>
        

@@ -13,27 +13,7 @@ cloudinary.v2.config({
   api_secret: "KD3c9quklAcigLhr0hC2EPpq7wI",
 });
 
-export async function imgHamdler(req, res) {
-  const file = req.file;
-  console.log(file);
-  try {
-    const img = await cloudinary.v2.uploader.upload(file.path, {
-      folder: "test",
-    });
-    console.log(img);
-    //res.status(201).json({s:true})
 
-    // cloudinary.v2.uploader.upload(file.path,{ folder:"test"},(err,result)=>{
-    //     console.log(result)
-    //     res.status(201).json({s:true})
-
-    // })
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-
-  // res.status(201).json({su:true})
-}
 
 export async function registerUser(req, res) {
   const oldUser = await User.findOne({
@@ -50,7 +30,15 @@ export async function registerUser(req, res) {
       email: req.body.email,
       password: hashedPass,
     });
-    return res.status(200).json(newUser);
+    const token = await jwt.sign(
+        {
+          userName: newUser.name,
+          userId: newUser._id,
+        },
+        "cmckcmc"
+      );
+      
+    return res.status(200).json({token:token});
   }
 }
 
@@ -75,6 +63,7 @@ export async function Login(req, res) {
         },
         "cmckcmc"
       );
+      
       res.status(200).json(token);
     } else {
       res.status(400).json({

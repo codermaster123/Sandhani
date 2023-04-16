@@ -10,6 +10,7 @@ import Input from "../Components/Input"
 import fetcher from "../utilis/Fetcher"
 
 import {useMutation,useQueryClient,} from "@tanstack/react-query";
+import URL from "../URL";
 
 
 export default function Comp() {
@@ -27,9 +28,9 @@ const navigate=useNavigate();
   };
   
   
-   const token=localStorage.getItem("token");
+   const token=localStorage.getItem("loginToken");
    
-  const {mutate,isError}=useMutation((param)=>fetcher("http://localhost:3000/AddSandhani", {
+  const {mutate,isError}=useMutation((param)=>fetcher(URL+"/AddSandhani", {
       method: "POST",
       headers:{
         "Authorization":`Bearer ${token}`
@@ -40,7 +41,8 @@ const navigate=useNavigate();
       onSuccess(data){
         console.log(data)
         localStorage.setItem("sandhaniToken",data.token);
-            
+        navigate("/mysandhani")
+      
       
       },
       onError(e){
@@ -62,6 +64,7 @@ const navigate=useNavigate();
     data.append("amount",input.amount)
     data.append("Sandhani", postImage);
     await  mutate(data)
+    
   }
   
   return (
@@ -86,7 +89,7 @@ const navigate=useNavigate();
 
           </div>
           
-              <button className="btn btn-primary  btn-wide w-full text-base-100">Wide</button>
+              <button className="btn btn-primary  btn-wide w-full text-base-100">Create</button>
           
         </form>
         
