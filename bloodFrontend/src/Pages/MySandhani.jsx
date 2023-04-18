@@ -3,7 +3,7 @@ import {useState,useEffect} from "react";
 import {useQuery} from "@tanstack/react-query"
 import BloodList from "../Components/BloodList"
 import AddBlood from "../Components/AddBlood"
-import URL from "../URL";
+import url from "../URL";
 
 function Sandhani() {
   const [sandhani,setSandhani]=useState()
@@ -20,7 +20,7 @@ function Sandhani() {
    
   const token=localStorage.getItem("loginToken");
       
-  const {data,isLoading}=useQuery(["sandhani"],()=>fetcher(URL"/Sandhani",{
+  const {data,isLoading}=useQuery(["sandhani"],()=>fetcher("http://43.205.172.73/api/Sandhani",{
       method:"GET",
       headers:{
         "Content-Type":"application/json",

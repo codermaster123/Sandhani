@@ -24,7 +24,7 @@ export default function Home() {
   const handleSubmit=async(e)=>{
       e.preventDefault();
        console.log("submitting")
-      const res =await fetch(URL+"/register",{
+      const res =await fetch("http://43.205.172.73/api/register",{
         method:"POST",
           headers:{
         "Content-Type":"application/json"

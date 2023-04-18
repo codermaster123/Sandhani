@@ -1,1 +1,3 @@
-export default URL="http://43.205.172.73/api";
+let l=23;
+
+export default l;

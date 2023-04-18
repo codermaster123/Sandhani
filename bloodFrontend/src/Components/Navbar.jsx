@@ -23,7 +23,7 @@ export default function NavBar() {
        
        e.preventDefault();
        console.log("submitting")
-      const res =await fetch(URL+"/login",{
+      const res =await fetch("http://43.205.172.73/api/login",{
         method:"POST",
           headers:{
         "Content-Type":"application/json"
