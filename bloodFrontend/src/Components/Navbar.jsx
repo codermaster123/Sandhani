@@ -10,7 +10,7 @@ import URL from "../URL";
 export default function NavBar() {
   const [open,setOpen]=useState(false)
   const navigate=useNavigate();
-  const [input ,setInput]=useState({name:null,email:null,password:null});
+  const [input ,setInput]=useState({name:"",email:"",password:""});
   const token=localStorage.getItem("sandhaniToken");
       
   const handleChange=(e)=>{
@@ -67,9 +67,9 @@ export default function NavBar() {
   <div className="modal-box flex flex-col items-center justify-center ">
     <h3 className="font-bold text-lg text-center">Login</h3>
     <form onSubmit={handleSubmit}>
-     <input type="text" placeholder="Enter your Name" onChange={handleChange} value={input.name}  className="m-2 input input-bordered input-error w-full max-w-xs" />
-      <input type="E-mail" placeholder="Enter your Email" onChange={handleChange} value={input.email} className="m-2 input input-bordered input-error w-full max-w-xs" />
-     <input type="password" placeholder="Enter your password" onChange={handleChange} value={input.password} className="m-2 input input-bordered input-error w-full max-w-xs" />
+     <input type="text" name="name" placeholder="Enter your Name" onChange={handleChange} value={input.name}  className="m-2 input input-bordered input-error w-full max-w-xs" />
+      <input type="E-mail" name="email" placeholder="Enter your Email" onChange={handleChange} value={input.email} className="m-2 input input-bordered input-error w-full max-w-xs" />
+     <input type="password" name="password" placeholder="Enter your password" onChange={handleChange} value={input.password} className="m-2 input input-bordered input-error w-full max-w-xs" />
       
     <div className="modal-action">
     <button className="btn btn-sm py-2 px-8 bg-red-700 hover:bg-red-800 text-white border-red-500 hover:border-red-500 ">Submit</button>
