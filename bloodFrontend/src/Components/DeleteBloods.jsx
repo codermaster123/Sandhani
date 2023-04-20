@@ -9,7 +9,7 @@ export default function DeleteBloods({ids,afterDelete}) {
   
     const token =localStorage.getItem("loginToken");
     
-  const mutation=useMutation((param)=>fetcher("http://43.205.172.73/api/deletebloods",{
+  const mutation=useMutation((param)=>fetcher("https://sandhanismmamcu.com/api/deletebloods",{
        method:"DELETE",
       headers:{
         "Content-Type":"application/json",

@@ -30,7 +30,7 @@ const navigate=useNavigate();
   
    const token=localStorage.getItem("loginToken");
    
-  const {mutate,isError}=useMutation((param)=>fetcher("http://43.205.172.73/api/AddSandhani", {
+  const {mutate,isError}=useMutation((param)=>fetcher("https://sandhanismmamcu.com/api/AddSandhani", {
       method: "POST",
       headers:{
         "Authorization":`Bearer ${token}`

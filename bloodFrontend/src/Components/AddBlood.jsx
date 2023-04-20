@@ -15,7 +15,7 @@ export default function AddBlood(props) {
   
   const token =localStorage.getItem("loginToken");
     
-  const mutation=useMutation((param)=>fetcher("http://43.205.172.73/api/Addblood",{
+  const mutation=useMutation((param)=>fetcher("https://sandhanismmamcu.com/api/Addblood",{
        method:"POST",
       headers:{
         "Content-Type":"application/json",

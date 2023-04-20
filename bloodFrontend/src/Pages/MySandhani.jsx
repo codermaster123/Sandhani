@@ -20,7 +20,7 @@ function Sandhani() {
    
   const token=localStorage.getItem("loginToken");
       
-  const {data,isLoading}=useQuery(["sandhani"],()=>fetcher("http://43.205.172.73/api/Sandhani",{
+  const {data,isLoading}=useQuery(["sandhani"],()=>fetcher("https://sandhanismmamcu.com/api/Sandhani",{
       method:"GET",
       headers:{
         "Content-Type":"application/json",

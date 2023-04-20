@@ -23,7 +23,7 @@ export default function UpdateBlood({id}) {
    }
    
     
-   const mutation=useMutation((param)=>fetcher(`http://43.205.172.73/api/updateBlood/${id}`,{
+   const mutation=useMutation((param)=>fetcher(`https://sandhanismmamcu.com/api/updateBlood/${id}`,{
        method:"PUT",
       headers:{
         "Content-Type":"application/json",

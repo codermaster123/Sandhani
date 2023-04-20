@@ -32,7 +32,7 @@ export default function  List(props) {
               }
               
   },[deleted])
-  const {isLoading}=useQuery(["bloods"],()=>fetcher(`http://43.205.172.73/api/getblood/${props.id}`,{
+  const {isLoading}=useQuery(["bloods"],()=>fetcher(`https://sandhanismmamcu.com/api/getblood/${props.id}`,{
       method:"GET",
       headers:{
         "Content-Type":"application/json",

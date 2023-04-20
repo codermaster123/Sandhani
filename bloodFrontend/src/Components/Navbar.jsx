@@ -3,7 +3,6 @@ import {Link,useNavigate} from "react-router-dom";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { HiOutlineMenu } from "react-icons/hi";
 import Router from "../Router";
-import Login from "../Components/LoginModal";
 import URL from "../URL";
 
 
@@ -23,7 +22,7 @@ export default function NavBar() {
        
        e.preventDefault();
        console.log("submitting")
-      const res =await fetch("http://43.205.172.73/api/login",{
+      const res =await fetch("https://sandhanismmamcu.com/api/login",{
         method:"POST",
           headers:{
         "Content-Type":"application/json"
