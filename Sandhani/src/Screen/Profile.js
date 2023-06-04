@@ -39,7 +39,7 @@ export default  function Profile({route}) {
   }
 
   const {token} = route.params
-      
+  console.log(token)
     const  {data,isLoading,isError}=useQuery(["getUserDetails"],()=>fetcher(URL+"/findUser/",{ method:"GET",
       headers:{
         "Content-Type":"application/json",
@@ -50,13 +50,13 @@ export default  function Profile({route}) {
       refetchOnWindowFocus: false,
       enabled:true,
       onSuccess(data){
-      
+         console.log(data)
           setuser((prev)=>data);
           setActive(!data?.isDonted)
           if(data?.isDonted){
              handleDate(data?.donateDate)
           }
-          setSandhani((prev)=>data.sandhani)
+          setSandhani((prev)=>data?.sandhani)
           
       },
       onError(e){
@@ -111,17 +111,17 @@ export default  function Profile({route}) {
        <List label="Blood Group" value={user?.bloodGroup}/>
        <List label="Phone" value={user?.phone}/>
        <List label="Address" value={user?.address}/>
-       <List label="Donor of" value={sandhani?.name}/>
+       <List label="Donor of" value={sandhani?.address}/>
       
      </View>
      
-     <View className="flex-1 bg-white">
-     <TouchableHighlight    style={styles.buttonContainer}
-    onPress={()=>ToastAndroid.show("fill it",ToastAndroid.LONG)} activeOpacity={0.7} underlayColor="#86EFAC" className="absolute right-0 top-0 m-2   bg-green-500  rounded-lg">
+     <View className="flex-1 ">
+     <TouchableHighlight  className="bg-green-500"  style={styles.buttonContainer}
+    onPress={()=>logout()} activeOpacity={0.7} underlayColor="#86EFAC" className="absolute right-0 top-0 m-2   bg-green-500  rounded-lg">
         <View className="flex-1 flex-row justify-center items-center">
         <Icon style={{fontSize:20 ,color:"#fff",marginRight:10}} name="logout"/>
       
-          <Text style={styles.buttonText} className=" ">
+          <Text style={styles.buttonText} className="text-white">
             Logout
           </Text>
         </View>
@@ -135,11 +135,11 @@ export default  function Profile({route}) {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 4,
+    backgroundColor: 'red',
+    borderRadius: 6,
     elevation: 2, // adds shadow effect on Android
-    shadowColor: '#000000', // adds shadow effect on iOS
-    shadowOpacity: 0.2,
+    shadowColor: 'red', // adds shadow effect on iOS
+    shadowOpacity: 0.8,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#333333',
+    color: '#fff',
     textAlign: 'center',
   },
 });

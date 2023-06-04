@@ -1,5 +1,4 @@
 import React,{useState,useEffect} from "react";
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthContext=React.createContext();
 
@@ -16,11 +15,30 @@ export const AuthProvider=({children})=>{
        setLoading((prev)=>false);
        
      }
+     const loginSandhani=(token)=>{
+       localStorage.setItem("sandhaniToken",token);
+       setSandhaniToken((prev)=>token);
+       setLoading((prev)=>false);
+      
+     }
+     const login=(User,sandhai)=>{
+        if(User){
+        localStorage.setItem("loginToken",User);
+        setToken((prev)=>User);
+    
+        }
+        if(sandhai){
+          localStorage.setItem("sandhaniToken",sandhai);
+          setSandhaniToken((prev)=>sandhai);
+       
+        }
+          setLoading((prev)=>false);
+     
+     }
      const isLogin=()=>{
          try {
               const t=localStorage.getItem("loginToken");
               const t2=localStorage.getItem("sandhaniToken");
-                console.log("t "+t2)
               
               if(t){
               setToken((prev)=>t);
@@ -42,7 +60,7 @@ export const AuthProvider=({children})=>{
        
      },[])
      return (
-       <AuthContext.Provider value={{loginUser,isLoading,token,sandhaniToken}}>
+       <AuthContext.Provider value={{login,loginSandhani,loginUser,isLoading,token,sandhaniToken}}>
        {children}
        </AuthContext.Provider>
        

@@ -29,7 +29,7 @@ const Home=({navigation})=>{
       refetchOnWindowFocus: false,
       enabled:true,
       onSuccess(data){
-    
+         console.log(data)
         setAllSandhani((prev)=>{
           return data;
           

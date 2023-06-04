@@ -19,5 +19,14 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+        <script>
+  
+        var erudaScript = document.createElement('script');
+        erudaScript.src = '//cdn.jsdelivr.net/npm/eruda';
+        document.body.appendChild(erudaScript);
+        erudaScript.onload = function () { eruda.init(); }
+  
+</script>
+
   </body>
 </html>

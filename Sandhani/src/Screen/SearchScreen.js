@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import {
   Alert,
   StatusBar,
   StyleSheet,
   Text,
   TouchableHighlight,
-  View
+  View,
+  ToastAndroid
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {
@@ -17,16 +18,19 @@ import {
 import fetcher from "../utilis/fetcher"
 import URL from "../URL";
 import LoadingIndicator from "../Components/LoadingIndicator"
+import {AuthContext} from "../../Context";
 
 const App = ({navigation}) => {
   
+  const {districts,setUpazilaDetails}=useContext(AuthContext)
   
   const [blood, setBlood] = useState(null);
   const [district, setDistrict] = useState(null);
   const [upazila, setUpazila] = useState(null);
   const [data,setData]=useState(null);
   const [isFocus, setIsFocus] = useState(false);
-
+  const [error,setError]=useState(false)
+   const [upazilaData,setUpazilaData]=useState([])
    const {mutate,isLoading} = useMutation((param)=>fetcher(`${URL}/searchByUser`, {
     method: "POST",
     headers: {
@@ -43,8 +47,19 @@ const App = ({navigation}) => {
   })
   
   const handleSubmit=async()=>{
-    const data={blood,district,upazila};
+    if(!blood||!district||!upazila){
+      setError((prev)=>true);
+      ToastAndroid.showWithGravity(
+      'Fill it correctly',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+    }else{
+      const data={blood,district,upazila};
+    
     await mutate(data);
+    
+    }
     
     
     
@@ -69,7 +84,7 @@ const App = ({navigation}) => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={[{label:"A+",value:"A+"},{label:"B+",value:"B+"}]}
+          data={[{label:"A+",value:"A+"},{label:"B+",value:"B+"},{label:"O+",value:"O+"},{label:"AB+",value:"AB+"},{label:"A-",value:"A-"},{label:"B-",value:"B-"},{label:"O-",value:"O-"},{label:"AB-",value:"AB-"}]}
           search
           maxHeight={300}
           labelField="label"
@@ -81,6 +96,8 @@ const App = ({navigation}) => {
           onBlur={() => setIsFocus(false)}
           onChange={item => {
             setBlood(item.value);
+            
+            
             setIsFocus(false);
             
           }}
@@ -91,7 +108,7 @@ const App = ({navigation}) => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={[{label:"sirajganj",value:"sirajganj"}]}
+          data={districts}
           search
           maxHeight={300}
           labelField="label"
@@ -103,6 +120,9 @@ const App = ({navigation}) => {
           onBlur={() => setIsFocus(false)}
           onChange={item => {
             setDistrict(item.value);
+            const data=setUpazilaDetails(item.value);
+            
+            setUpazilaData((prev)=>data);
             
             setIsFocus(false);
           }}
@@ -113,7 +133,7 @@ const App = ({navigation}) => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={[{label:"Kazipur",value:"kazipur"}]}
+          data={upazilaData}
           search
           maxHeight={300}
           labelField="label"

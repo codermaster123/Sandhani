@@ -31,7 +31,7 @@ const InfiniteScrollList = () => {
     setIsLoading(false);
     
   };
-   const  {data}=useQuery(["Users",isLoading,blood],()=>fetcher(`http://localhost:3000/getUsers?blood=${blood}&offset=${offset}&limit=${limit}`),{
+   const  {data}=useQuery(["Users",isLoading,blood],()=>fetcher(`https://sandhanismmamcu.com/api/getUsers?blood=${blood}&offset=${offset}&limit=${limit}`),{
       
       refetchOnWindowFocus: false,
       enabled:true,

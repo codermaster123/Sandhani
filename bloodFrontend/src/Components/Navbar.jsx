@@ -1,22 +1,46 @@
-import React,{useState} from "react"
+import React,{useState,useContext} from "react"
 import {Link,useNavigate} from "react-router-dom";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { HiOutlineMenu } from "react-icons/hi";
 import Router from "../Router";
 import URL from "../URL";
+import {useQuery} from "@tanstack/react-query"
+import fetcher from "../utilis/Fetcher"
+import {AuthContext} from "../../Context/AuthContext";
 
 
 export default function NavBar() {
   const [open,setOpen]=useState(false)
   const navigate=useNavigate();
   const [input ,setInput]=useState({name:"",email:"",password:""});
-  const token=localStorage.getItem("sandhaniToken");
-      
+  const [sandhani,setSandhani]=useState(false);
+  const token=localStorage.getItem("loginToken");
+  const {login,sandhaniToken}=useContext(AuthContext);
+ 
   const handleChange=(e)=>{
        
        setInput((prev)=>({...prev,[e.target.name]:e.target.value}));
       
   }
+  // const {data,isLoading}=useQuery(["checksandhani",token],()=>fetcher("https://sandhanismmamcu.com/api/Sandhani",{
+  //     method:"GET",
+  //     headers:{
+  //       "Content-Type":"application/json",
+  //       "Authorization":`Bearer ${token}`
+  //     },
+  //   }),{
+  //     onSuccess:(data)=>{
+  //       if(data.sandhani){
+  //         setSandhani((prev)=>{
+  //         return true })
+  //         localStorage.setItem("sandhaniToken",data.sandhani._id);
+        
+  //     }
+        
+        
+  //     }
+      
+  //   })
   
   const handleSubmit=async(e)=>{
        
@@ -32,13 +56,17 @@ export default function NavBar() {
          
       })
       const data=await res.json();
-      console.log(data);
-      localStorage.setItem("loginToken",data.token);
+      console.log(data.user[0]?.sandhani);
+      if(data.token||data.user[0]?.sandhani){
+          login(data.token,data.user[0]?.sandhani)
+          setSandhani((prev)=>true)
+      }
       
       setInput((prev)=>({...prev,name:""}));
       setInput((prev)=>({...prev,email:""}));
       setInput((prev)=>({...prev,password:""}));
       //navigate("/TLogin")
+      navigate("/mysandhani")
      
    }
    
@@ -57,7 +85,7 @@ export default function NavBar() {
       <span className="text-red-700">Sand</span>
       <span className="text-black">hani</span>
       </div>
-      <div className="flex-none  lg:block">
+      {!token&&<div className="flex-none  lg:block">
            {/* The button to open modal */}
           
 <a href="#my-modal-2" className="ml-4"><RiAccountCircleFill className="text-2xl"/>
@@ -79,7 +107,7 @@ export default function NavBar() {
 </div>
 
 
-      </div>
+      </div>}
     </div>
     
        <Router/>
@@ -96,7 +124,7 @@ export default function NavBar() {
     
       <Link  to="/"><li className="li">Get Started</li></Link>
       <Link to="/about"><li className="li">About</li></Link>
-    {token&&<Link to="/mysandhani"><li className="li">My Sandhani</li></Link>}
+    {sandhaniToken&&<Link to="/mysandhani"><li className="li">My Sandhani</li></Link>}
       
       
     </ul>

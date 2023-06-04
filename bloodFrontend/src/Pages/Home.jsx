@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import img1 from "../assets/img.png";
+
 // import useAuth from "../hooks/useAuth"
 import {Link,useNavigate} from "react-router-dom";
 import URL from "../URL";
@@ -48,13 +49,13 @@ export default function Home() {
   return (
     <>
   
-      <div className="flex flex-col h-full mt-20">
+      <div className="flex flex-col  mt-20">
         <img class="" src={img1} alt="" />
         <h1 className="md:tracking-widest  text-center font-title text-2xl md:text-6xl font-bold">
           Sandhani is a blood bank organization
         </h1>
         <div className="w-full flex justify-center items-center mt-2">
-       <a href="#my-modal-10" className="hover:bg-red-800  bg-red-700 w-20 text-center text-white rounded-md py-2">start
+       <a href="#my-modal-10" className="hover:bg-red-800 font-semibold tracking-widest bg-red-700 w-20 text-center text-white rounded-md py-2">start
           </a>
              <div className="modal" id="my-modal-10">
   <div className="modal-box flex flex-col items-center justify-center ">

@@ -235,3 +235,8 @@ export async function userDetails(req, res) {
     res.status(200).json(data)
   } catch (e) {}
 }
+export function getLocation(req,res){
+  return res.status(200).json({districtId:2});
+  
+  
+}

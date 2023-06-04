@@ -1,11 +1,16 @@
-import React from "react";
+import React,{useContext} from "react";
 import {View,Text,Image,StyleSheet} from "react-native";
 
 import BigButton from "../Components/BigButton";
+import {AuthContext} from "../../Context";
 
 
 const Welcome=({ navigation, route })=>{
+    
+    const {start}=useContext(AuthContext);
+  
     const onButtonTap=()=>{
+      start();
       
       navigation.navigate("Tab");
 

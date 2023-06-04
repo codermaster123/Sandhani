@@ -52,45 +52,46 @@ const BloodDetails=({sId,sref,scrollPosition})=> {
   const navigation = useNavigation();
 
 
-    useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
+  //   useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     () => {
         
-        if(page){
+  //       if(page){
           
-            navigation.goBack(null);
-            return true
-        }else{
+  //           navigation.goBack(null);
+  //           return true
+  //       }else{
             
-            setPage((prev)=>!prev);
-            sref.current.scrollTo({x:0,y:0,animated: true})
+  //           setPage((prev)=>!prev);
+  //           sref.current.scrollTo({x:0,y:0,animated: true})
     
-            return true;
+  //           return true;
             
-        }
-        // Do nothing when the back button is pressed
+  //       }
+  //       // Do nothing when the back button is pressed
         
-      // if (sref.current?.contentOffset.X > 0) {
-        // console.log(sref.current.contentOffset)
+  //     // if (sref.current?.contentOffset.X > 0) {
+  //       // console.log(sref.current.contentOffset)
         
-        // if(sref.current.contentOffset.x>0){
-        //   // If currently on the second screen, scroll back to the first screen
-        //   sref.current?.scrollTo({ x: 0, y: 0, animated: true });
-        //   return true;
-        // } else {
-        //   // Otherwise, navigate back to the previous screen
-        //   navigation.goBack(null);
+  //       // if(sref.current.contentOffset.x>0){
+  //       //   // If currently on the second screen, scroll back to the first screen
+  //       //   sref.current?.scrollTo({ x: 0, y: 0, animated: true });
+  //       //   return true;
+  //       // } else {
+  //       //   // Otherwise, navigate back to the previous screen
+  //       //   navigation.goBack(null);
         
-        //   return true;
-        // }
-       // return true;
+  //       //   return true;
+  //       // }
+  //     // return true;
         
-      }
-    );
+  //     }
+  //   );
 
-    return () => backHandler.remove();
-  }, []);
+  //   return () => backHandler.remove();
+  // }, []);
+  
             //<DonarModal groupName={blood.groupName} sId={sId} isVisible={isVisible} onChange={changeVisible}/>
    
    return (
@@ -101,10 +102,11 @@ const BloodDetails=({sId,sref,scrollPosition})=> {
         className="m-2  rounded-md"
         >
        
-        <View  className="flex-row w-ful border border-red-500 p-2 m-2 ">
+        <View  className="my-[2px] bg-white  rounded-md">
+               <View className="flex-row p-2 w-ful m-2 border border-red-500">
                <View className="w-1/2"><Text className="text-center">Group</Text></View>
                <View className="w-1/2"><Text className="text-center">Amount</Text></View>
-               
+               </View>
             </View>
         
             

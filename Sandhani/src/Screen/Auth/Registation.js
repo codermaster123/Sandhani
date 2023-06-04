@@ -41,8 +41,8 @@ import {AuthContext} from "../../../Context";
 export default function SignUp( {
   navigation,route
 }) {
-  const {login}=useContext(AuthContext);
-  
+  const {login,districts,setUpazilaDetails}=useContext(AuthContext);
+   const [upazilaData,setUpazilaData]=useState([])
   const [isFocus, setIsFocus] = useState(false);
   const [district, setDistrict] = useState(null);
   const [upazila, setUpazila] = useState(null);
@@ -177,7 +177,7 @@ export default function SignUp( {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={[{label:"B+",value:"B+"}]}
+          data={[{label:"A+",value:"A+"},{label:"B+",value:"B+"},{label:"O+",value:"O+"},{label:"AB+",value:"AB+"},{label:"A-",value:"A-"},{label:"B-",value:"B-"},{label:"O-",value:"O-"},{label:"AB-",value:"AB-"}]}
           search
           maxHeight={300}
           labelField="label"
@@ -206,7 +206,7 @@ export default function SignUp( {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={[{label:"sirajganj",value:"sirajganj"}]}
+          data={districts}
           search
           maxHeight={300}
           labelField="label"
@@ -218,6 +218,10 @@ export default function SignUp( {
           onBlur={() => setIsFocus(false)}
           onChange={item => {
             setDistrict((prev)=>item.value)
+            const data=setUpazilaDetails(item.value);
+            
+            setUpazilaData((prev)=>data);
+            
             setIsFocus(false);
           }}
         />
@@ -228,7 +232,7 @@ export default function SignUp( {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={[{label:"kazipur",value:"kazipur"}]}
+          data={upazilaData}
           search
           maxHeight={300}
           labelField="label"
@@ -243,7 +247,7 @@ export default function SignUp( {
             setIsFocus(false);
           }}
         />
-            <Input placeholder="Enter your Password" label="password" IconName="lock-outline" password onChangeText={(text)=>handleInput("password", text)} error={error?"please enter your correct Details ": null} />
+            <Input placeholder="Enter your Password" label="password" IconName="lock-outline" password onChangeText={(text)=>handleInput("Password", text)} error={error?"please enter your correct Details ": null} />
             </View>
             <View className="w-full  flex-row ml-2">
              <Text className="text-sm text-gray-600">if you have no account.</Text>

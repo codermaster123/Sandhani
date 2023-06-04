@@ -6,15 +6,16 @@ export default function Card({sandhani,onClick}) {
   return (
     <TouchableOpacity key={sandhani?._id} activeOpacity={0.9} className="flex flex-col bg-white  rounded-lg m-2 shadow-lg  " style={{shadowColor:"red",shadowOffset: {width: -2, height: 4}, shadowOpacity: 0.8, shadowRadius: 3}}>
       
-              <Animated.View>         
+              <Animated.View className="">         
               <View className="flex-row items-center">
-              <View className=" rounded-full m-2" >
+              <View className=" rounded-full " >
                <Image  className="w-20 m-2 h-20  rounded-full " source={{uri:sandhani.imageUrl}}/>
               </View>
-              <Text className="text-xl font-bold text-center ">{sandhani?.name}</Text>
-              
+              <View className="w-60">
+              <Text className="tracking-wide text-center font-bold">{sandhani?.name}</Text>
               </View>
-             <View className="flex-row w-full border-b">
+              </View>
+             <View className="flex-row w-full border-b mt-2">
                <View className="flex-col w-1/2">
                 <Text className="text-center">current blood</Text>
                 <Text className="text-center">{sandhani.amount}</Text>

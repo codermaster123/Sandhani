@@ -19,7 +19,7 @@ const Tab=createBottomTabNavigator();
           
 export default function BottomTab() {
     return (
-      <AuthProvider>
+      <>
        <StatusBar style="light" />
      
        <Tab.Navigator screenOptions={{headerStyle: {
@@ -45,6 +45,7 @@ export default function BottomTab() {
 
           
       </Tab.Navigator>
-      </AuthProvider>
+      </>
+    
     )
 }
